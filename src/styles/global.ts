@@ -1,6 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
+  :root {
+    font-size: 60%;
+  }
+
   *,
   *::before,
   *::after {
@@ -26,8 +30,10 @@ export default createGlobalStyle`
 
   body,
   input,
+  textarea,
   button {
     font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
   }
 
   a {
@@ -40,5 +46,11 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    :root {
+      font-size: 62.5%
+    }
   }
 `;
