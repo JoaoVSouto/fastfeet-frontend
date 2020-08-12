@@ -1,6 +1,7 @@
 export default {
   primary: '#7d40e7',
   secondary: '#fff',
+  secondaryDark: '#f5f5f5',
   tertiary: '#a991c5',
 
   titleColor: '#444',
