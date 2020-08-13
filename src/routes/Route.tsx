@@ -5,6 +5,7 @@ import {
   Redirect,
   Route,
 } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import AuthLayout from '../pages/_layouts/auth';
 import DefaultLayout from '../pages/_layouts/default';
@@ -19,7 +20,7 @@ const RouteWrapper: React.FC<IProps> = ({
   isPrivate = false,
   ...rest
 }) => {
-  const signed = false;
+  const signed = useSelector(state => state.auth.signed);
 
   if (!signed && isPrivate) {
     return <Redirect to="/" />;
