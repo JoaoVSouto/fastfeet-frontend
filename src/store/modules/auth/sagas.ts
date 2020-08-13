@@ -1,5 +1,6 @@
 import { takeLatest, all, call, put } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
+import { CustomRehydrateAction } from 'redux-persist';
 import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
@@ -8,6 +9,16 @@ import history from '../../../services/history';
 import { IActionSignInRequest } from '../types';
 
 import { signInSuccess, signFailure } from './actions';
+
+export function setToken({ payload }: CustomRehydrateAction): void {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
 
 // eslint-disable-next-line
 export function* signIn({ payload }: IActionSignInRequest) {
@@ -32,4 +43,7 @@ export function* signIn({ payload }: IActionSignInRequest) {
   }
 }
 
-export default all([takeLatest('@auth/SIGN_IN_REQUEST', signIn)]);
+export default all([
+  takeLatest('persist/REHYDRATE', setToken),
+  takeLatest('@auth/SIGN_IN_REQUEST', signIn),
+]);
