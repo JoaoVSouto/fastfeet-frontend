@@ -2,11 +2,40 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export const Container = styled.div`
+  position: relative;
   background-color: ${({ theme }) => theme.secondary};
   padding: 6rem 3rem;
   border-radius: 0.4rem;
   text-align: center;
   max-width: 360px;
+`;
+
+interface ILoadingWrapperProps {
+  isLoading?: boolean;
+}
+
+export const LoadingWrapper = styled.div<ILoadingWrapperProps>`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0.4rem;
+  backdrop-filter: blur(0.3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: ${({ isLoading }) => (isLoading ? 'unset' : 'none')};
+  opacity: ${({ isLoading }) => (isLoading ? 1 : 0)};
+  transition: opacity 0.2s;
+
+  strong {
+    margin-top: 1rem;
+    font-size: 1.8rem;
+    color: ${({ theme }) => theme.primary};
+  }
 `;
 
 export const Logo = styled.img`

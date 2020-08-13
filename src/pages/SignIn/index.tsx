@@ -1,12 +1,15 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { signInRequest } from '../../store/modules/auth/actions';
 
+import TeaLoading from '../../components/TeaLoading';
+
 import {
   Container,
+  LoadingWrapper,
   Logo,
   Form,
   Input,
@@ -26,6 +29,7 @@ const SignInSchema = Yup.object().shape({
 });
 
 const SignIn: React.FC = () => {
+  const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -76,6 +80,11 @@ const SignIn: React.FC = () => {
 
         <SubmitButton type="submit">Entrar no sistema</SubmitButton>
       </Form>
+
+      <LoadingWrapper isLoading={loading}>
+        <TeaLoading />
+        <strong>Carregando...</strong>
+      </LoadingWrapper>
     </Container>
   );
 };
