@@ -57,6 +57,16 @@ export const Input = styled.input`
   }
 `;
 
+export const Error = styled.span`
+  display: block;
+  margin-top: -1rem;
+  margin-bottom: 1.6rem;
+  color: ${({ theme }) => theme.danger};
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: right;
+`;
+
 export const SubmitButton = styled.button`
   height: 4.5rem;
   border-radius: 0.4rem;
