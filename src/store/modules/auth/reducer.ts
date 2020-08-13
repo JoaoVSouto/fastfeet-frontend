@@ -1,14 +1,9 @@
 import produce from 'immer';
+import { DefaultRootState } from 'react-redux';
 
 import { IAction } from '../types';
 
-interface IInitialState {
-  token: string | null;
-  signed: boolean;
-  loading: boolean;
-}
-
-const INITIAL_STATE: IInitialState = {
+const INITIAL_STATE: DefaultRootState['auth'] = {
   token: null,
   signed: false,
   loading: false,
@@ -17,7 +12,7 @@ const INITIAL_STATE: IInitialState = {
 export default function auth(
   state = INITIAL_STATE,
   action: IAction
-): IInitialState {
+): DefaultRootState['auth'] {
   return produce(state, draft => {
     switch (action.type) {
       case '@auth/SIGN_IN_REQUEST':
