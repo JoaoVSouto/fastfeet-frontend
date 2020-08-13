@@ -2,6 +2,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
+import { ToastContainer } from 'react-toastify';
 
 import light from './styles/themes/light';
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
         </Router>
 
         <GlobalStyle />
+        <ToastContainer autoClose={3000} />
       </ThemeProvider>
     </ReduxProvider>
   );

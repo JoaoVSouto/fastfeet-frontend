@@ -1,5 +1,6 @@
 import { takeLatest, all, call, put } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
@@ -26,7 +27,7 @@ export function* signIn({ payload }: IActionSignInRequest) {
 
     history.push('/packages');
   } catch (err) {
-    // TODO: add toast error
+    toast.error('Falha na autenticação, verifique seus dados');
     yield put(signFailure());
   }
 }

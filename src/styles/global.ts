@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
+import 'react-toastify/dist/ReactToastify.min.css';
+
 export default createGlobalStyle`
   :root {
     font-size: 60%;
@@ -31,7 +33,8 @@ export default createGlobalStyle`
   body,
   input,
   textarea,
-  button {
+  button,
+  .Toastify__toast {
     font-family: 'Roboto', sans-serif;
     font-size: 1.6rem;
   }
@@ -46,6 +49,14 @@ export default createGlobalStyle`
 
   button {
     cursor: pointer;
+  }
+
+  .Toastify__toast--error {
+    background-color: ${({ theme }) => theme.danger};
+  }
+
+  .Toastify__toast--success {
+    background-color: ${({ theme }) => theme.success};
   }
 
   @media (min-width: 768px) {
