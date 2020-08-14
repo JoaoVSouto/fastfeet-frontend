@@ -1,7 +1,9 @@
 import React from 'react';
 
+import Header from '../../components/Header';
+
 const PackagesDashboard: React.FC = () => {
-  return <h1>packages dashboard</h1>;
+  return <Header />;
 };
 
 export default PackagesDashboard;
