@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { up } from 'styled-breakpoints';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 
@@ -66,7 +67,7 @@ export default createGlobalStyle`
     background-color: ${({ theme }) => theme.success};
   }
 
-  @media (min-width: 768px) {
+  ${up('tablet')} {
     :root {
       font-size: 62.5%
     }

@@ -5,7 +5,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 
-import light from './styles/themes/light';
+import { light } from './styles/themes';
 
 import GlobalStyle from './styles/global';
 
