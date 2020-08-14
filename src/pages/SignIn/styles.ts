@@ -8,6 +8,7 @@ export const Container = styled.div`
   border-radius: 0.4rem;
   text-align: center;
   max-width: 360px;
+  margin: 0 2rem;
 `;
 
 interface ILoadingWrapperProps {
@@ -39,7 +40,7 @@ export const LoadingWrapper = styled.div<ILoadingWrapperProps>`
 `;
 
 export const Logo = styled.img`
-  width: 253px;
+  width: 85%;
 `;
 
 export const Form = styled.form`
@@ -72,7 +73,6 @@ export const Input = styled.input`
   padding: 1.2rem 1.5rem;
   border-radius: 0.4rem;
   border: 1px solid ${({ theme }) => theme.borderColor};
-  color: ${({ theme }) => theme.textColor};
   transition: border-color 0.3s;
   width: 100%;
 
@@ -83,6 +83,57 @@ export const Input = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.textSecondaryColor};
     font-size: 1.6rem;
+  }
+`;
+
+export const Checkbox = styled.input.attrs({ type: 'checkbox' })`
+  opacity: 0;
+  position: absolute;
+
+  &:focus {
+    + label {
+      color: ${({ theme }) => theme.primary};
+
+      &::before {
+        border-color: ${({ theme }) => theme.primary};
+      }
+    }
+  }
+
+  &:checked + label::before {
+    background-color: ${({ theme }) => theme.primary};
+    border-color: ${({ theme }) => theme.primary};
+  }
+`;
+
+export const CheckboxLabel = styled.label`
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: fit-content;
+  transition: color 0.3s;
+
+  svg {
+    position: absolute;
+    color: ${({ theme }) => theme.secondary};
+    height: 2.8rem;
+    width: 2.8rem;
+    transform: translateX(-2px);
+  }
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid ${({ theme }) => theme.borderColor};
+    border-radius: 0.4rem;
+    margin-right: 1.6rem;
+    transition: all 0.3s;
   }
 `;
 

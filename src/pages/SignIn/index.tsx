@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { IoIosCheckmark } from 'react-icons/io';
 
 import { signInRequest } from '../../store/modules/auth/actions';
 
@@ -12,6 +13,8 @@ import {
   LoadingWrapper,
   Logo,
   Form,
+  Checkbox,
+  CheckboxLabel,
   Input,
   InputBlock,
   Label,
@@ -19,7 +22,7 @@ import {
   SubmitButton,
 } from './styles';
 
-import logo from '../../assets/images/logo.svg';
+import logo from '../../assets/images/logo.png';
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string()
@@ -77,6 +80,12 @@ const SignIn: React.FC = () => {
             <Error>{formik.errors.password}</Error>
           )}
         </InputBlock>
+
+        <Checkbox id="remember" />
+        <CheckboxLabel htmlFor="remember">
+          <IoIosCheckmark />
+          Lembrar-me
+        </CheckboxLabel>
 
         <SubmitButton type="submit">Entrar no sistema</SubmitButton>
       </Form>

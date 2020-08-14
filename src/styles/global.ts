@@ -39,6 +39,13 @@ export default createGlobalStyle`
     font-size: 1.6rem;
   }
 
+  body,
+  input,
+  textarea,
+  button {
+    color: ${({ theme }) => theme.textColor};
+  }
+
   a {
     text-decoration: none;
   }
