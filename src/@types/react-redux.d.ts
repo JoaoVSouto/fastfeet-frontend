@@ -6,6 +6,7 @@ declare module 'react-redux' {
       token: string | null;
       signed: boolean;
       loading: boolean;
+      rememberMe: boolean;
     };
   }
 }

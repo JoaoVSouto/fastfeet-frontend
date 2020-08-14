@@ -9,5 +9,6 @@ export interface IActionSignInRequest extends IAction {
   payload: {
     email: string;
     password: string;
+    rememberMe: boolean;
   };
 }

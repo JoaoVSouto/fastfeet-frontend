@@ -8,7 +8,7 @@ import history from '../../../services/history';
 
 import { IActionSignInRequest } from '../types';
 
-import { signInSuccess, signFailure } from './actions';
+import { signInSuccess, signFailure, signOut } from './actions';
 
 export function setToken({ payload }: CustomRehydrateAction): void {
   if (!payload) return;
@@ -20,21 +20,37 @@ export function setToken({ payload }: CustomRehydrateAction): void {
   }
 }
 
+export function* treatRememberMe({
+  payload,
+}: CustomRehydrateAction): Generator {
+  if (!payload) return;
+
+  const { signed, rememberMe } = payload.auth;
+
+  const rememberMeMarker = sessionStorage.getItem('fastfeet:rememberMeMarker');
+
+  if (signed && !rememberMe && !rememberMeMarker) {
+    yield put(signOut());
+  }
+}
+
 // eslint-disable-next-line
 export function* signIn({ payload }: IActionSignInRequest) {
   try {
-    const { email, password } = payload;
+    const { email, password, rememberMe } = payload;
 
     const response: AxiosResponse = yield call(api.post, '/sessions', {
       email,
       password,
     });
 
+    sessionStorage.setItem('fastfeet:rememberMeMarker', 'set');
+
     const { token } = response.data;
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
-    yield put(signInSuccess(token));
+    yield put(signInSuccess(token, rememberMe));
 
     history.push('/packages');
   } catch (err) {
@@ -45,5 +61,6 @@ export function* signIn({ payload }: IActionSignInRequest) {
 
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
+  takeLatest('persist/REHYDRATE', treatRememberMe),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
 ]);

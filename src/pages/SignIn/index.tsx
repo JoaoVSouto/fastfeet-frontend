@@ -39,10 +39,11 @@ const SignIn: React.FC = () => {
     initialValues: {
       email: '',
       password: '',
+      rememberMe: false,
     },
     validationSchema: SignInSchema,
-    onSubmit: ({ email, password }) => {
-      dispatch(signInRequest(email, password));
+    onSubmit: ({ email, password, rememberMe }) => {
+      dispatch(signInRequest(email, password, rememberMe));
     },
   });
 
@@ -81,7 +82,12 @@ const SignIn: React.FC = () => {
           )}
         </InputBlock>
 
-        <Checkbox id="remember" />
+        <Checkbox
+          id="remember"
+          name="rememberMe"
+          onChange={formik.handleChange}
+          checked={formik.values.rememberMe}
+        />
         <CheckboxLabel htmlFor="remember">
           <IoIosCheckmark />
           Lembrar-me
