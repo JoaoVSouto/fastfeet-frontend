@@ -59,8 +59,13 @@ export function* signIn({ payload }: IActionSignInRequest) {
   }
 }
 
+export function signUserOut(): void {
+  history.push('/');
+}
+
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('persist/REHYDRATE', treatRememberMe),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
+  takeLatest('@auth/SIGN_OUT', signUserOut),
 ]);

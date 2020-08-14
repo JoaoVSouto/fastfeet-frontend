@@ -1,6 +1,9 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { IoIosLogOut } from 'react-icons/io';
+
+import { signOut } from '../../store/modules/auth/actions';
 
 import {
   Container,
@@ -15,6 +18,12 @@ import {
 import logo from '../../assets/images/logo.png';
 
 const Header: React.FC = () => {
+  const dispatch = useDispatch();
+
+  function handleSignOut(): void {
+    dispatch(signOut());
+  }
+
   return (
     <Container>
       <Navigation>
@@ -39,7 +48,7 @@ const Header: React.FC = () => {
       </Navigation>
 
       <Controls>
-        <LogoutButton type="button">
+        <LogoutButton type="button" onClick={handleSignOut}>
           <IoIosLogOut />
           Sair do sistema
         </LogoutButton>
