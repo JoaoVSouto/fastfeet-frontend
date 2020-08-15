@@ -21,6 +21,25 @@ import {
 
 import logo from '../../assets/images/logo.png';
 
+const links = [
+  {
+    label: 'Encomendas',
+    to: '/packages',
+  },
+  {
+    label: 'Entregadores',
+    to: '/couriers',
+  },
+  {
+    label: 'Destinatários',
+    to: '/recipients',
+  },
+  {
+    label: 'Problemas',
+    to: '/problems',
+  },
+];
+
 const Header: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -61,18 +80,11 @@ const Header: React.FC = () => {
           </LogoLink>
 
           <LinkList>
-            <LinkItem>
-              <NavLink to="/packages">Encomendas</NavLink>
-            </LinkItem>
-            <LinkItem>
-              <a href="#!">Entregadores</a>
-            </LinkItem>
-            <LinkItem>
-              <a href="#!">Destinatários</a>
-            </LinkItem>
-            <LinkItem>
-              <a href="#!">Problemas</a>
-            </LinkItem>
+            {links.map(link => (
+              <LinkItem key={link.label}>
+                <NavLink to={link.to}>{link.label}</NavLink>
+              </LinkItem>
+            ))}
           </LinkList>
         </Navigation>
 
@@ -97,26 +109,13 @@ const Header: React.FC = () => {
 
       <Drawer open={drawerOpen} ref={drawerRef}>
         <DrawerLinkList>
-          <DrawerLinkItem>
-            <NavLink to="/packages" onClick={closeDrawer}>
-              Encomendas
-            </NavLink>
-          </DrawerLinkItem>
-          <DrawerLinkItem>
-            <a href="#!" onClick={closeDrawer}>
-              Entregadores
-            </a>
-          </DrawerLinkItem>
-          <DrawerLinkItem>
-            <a href="#!" onClick={closeDrawer}>
-              Destinatários
-            </a>
-          </DrawerLinkItem>
-          <DrawerLinkItem>
-            <a href="#!" onClick={closeDrawer}>
-              Problemas
-            </a>
-          </DrawerLinkItem>
+          {links.map(link => (
+            <DrawerLinkItem key={link.label}>
+              <NavLink to={link.to} onClick={closeDrawer}>
+                {link.label}
+              </NavLink>
+            </DrawerLinkItem>
+          ))}
 
           <DrawerLinkItem isLogout>
             <button type="button" onClick={handleSignOut}>
