@@ -24,11 +24,12 @@ export default createGlobalStyle`
   html,
   body,
   #root {
-    height: 100%;
+    height: 100vh;
   }
 
   body {
     -webkit-font-smoothing: antialiased !important;
+    overflow-x: hidden;
   }
 
   body,
