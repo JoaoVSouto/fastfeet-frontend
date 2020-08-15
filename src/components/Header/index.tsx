@@ -30,6 +30,10 @@ const Header: React.FC = () => {
     dispatch(signOut());
   }
 
+  function closeDrawer(): void {
+    setDrawerOpen(false);
+  }
+
   return (
     <>
       <Container>
@@ -75,16 +79,24 @@ const Header: React.FC = () => {
       <Drawer open={drawerOpen}>
         <DrawerLinkList>
           <DrawerLinkItem>
-            <NavLink to="/packages">Encomendas</NavLink>
+            <NavLink to="/packages" onClick={closeDrawer}>
+              Encomendas
+            </NavLink>
           </DrawerLinkItem>
           <DrawerLinkItem>
-            <a href="#!">Entregadores</a>
+            <a href="#!" onClick={closeDrawer}>
+              Entregadores
+            </a>
           </DrawerLinkItem>
           <DrawerLinkItem>
-            <a href="#!">Destinatários</a>
+            <a href="#!" onClick={closeDrawer}>
+              Destinatários
+            </a>
           </DrawerLinkItem>
           <DrawerLinkItem>
-            <a href="#!">Problemas</a>
+            <a href="#!" onClick={closeDrawer}>
+              Problemas
+            </a>
           </DrawerLinkItem>
 
           <DrawerLinkItem isLogout>
