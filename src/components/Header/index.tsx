@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { IoIosLogOut } from 'react-icons/io';
@@ -25,6 +25,24 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const drawerRef = useRef<HTMLElement>(null);
+  const hamburguerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent): void => {
+      if (
+        !drawerRef.current?.contains(e.target as Node) &&
+        !hamburguerRef.current?.contains(e.target as Node)
+      ) {
+        setDrawerOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
 
   function handleSignOut(): void {
     dispatch(signOut());
@@ -68,6 +86,7 @@ const Header: React.FC = () => {
         <Hamburguer
           open={drawerOpen}
           onClick={() => setDrawerOpen(!drawerOpen)}
+          ref={hamburguerRef}
         >
           <span />
           <span />
@@ -76,7 +95,7 @@ const Header: React.FC = () => {
         </Hamburguer>
       </Container>
 
-      <Drawer open={drawerOpen}>
+      <Drawer open={drawerOpen} ref={drawerRef}>
         <DrawerLinkList>
           <DrawerLinkItem>
             <NavLink to="/packages" onClick={closeDrawer}>
