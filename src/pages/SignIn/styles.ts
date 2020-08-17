@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { darken } from 'polished';
+
+import { Button } from '../../components/Button';
 
 export const Container = styled.div`
   position: relative;
@@ -147,22 +148,7 @@ export const Error = styled.span`
   text-align: right;
 `;
 
-export const SubmitButton = styled.button`
+export const SubmitButton = styled(Button)`
   height: 4.5rem;
-  border-radius: 0.4rem;
-  border: 0;
-  background-color: ${({ theme }) => theme.primary};
-  color: ${({ theme }) => theme.secondary};
-  font-weight: bold;
   font-size: 1.6rem;
-  transition: background-color 0.3s;
-
-  &:hover,
-  &:focus {
-    background-color: ${({ theme }) => darken(0.05, theme.primary)};
-  }
-
-  &:active {
-    background-color: ${({ theme }) => darken(0.1, theme.primary)};
-  }
 `;
