@@ -7,6 +7,8 @@ import { signOut } from '../../store/modules/auth/actions';
 
 import { useWindowSize } from '../../hooks/useWindowSize';
 
+import Hamburguer from './components/Hamburguer';
+
 import {
   Container,
   Navigation,
@@ -15,7 +17,6 @@ import {
   LinkItem,
   LinkList,
   LogoutButton,
-  Hamburguer,
   Drawer,
   DrawerLinkList,
   DrawerLinkItem,
@@ -113,12 +114,7 @@ const Header: React.FC = () => {
           open={drawerOpen}
           onClick={() => setDrawerOpen(!drawerOpen)}
           ref={hamburguerRef}
-        >
-          <span />
-          <span />
-          <span />
-          <span />
-        </Hamburguer>
+        />
       </Container>
 
       <Drawer open={drawerOpen} ref={drawerRef}>
