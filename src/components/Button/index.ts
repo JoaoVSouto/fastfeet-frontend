@@ -7,6 +7,7 @@ const styles = css`
   background-color: ${({ theme }) => theme.primary};
   color: ${({ theme }) => theme.secondary};
   font-weight: bold;
+  letter-spacing: 0.03rem;
   transition: background-color 0.3s;
 
   &:hover,
