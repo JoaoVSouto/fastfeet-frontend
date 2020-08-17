@@ -5,6 +5,8 @@ import { IoIosLogOut } from 'react-icons/io';
 
 import { signOut } from '../../store/modules/auth/actions';
 
+import { useWindowSize } from '../../hooks/useWindowSize';
+
 import {
   Container,
   Navigation,
@@ -45,6 +47,8 @@ const Header: React.FC = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const { width } = useWindowSize();
+
   const drawerRef = useRef<HTMLElement>(null);
   const hamburguerRef = useRef<HTMLButtonElement>(null);
 
@@ -62,6 +66,16 @@ const Header: React.FC = () => {
 
     return () => document.removeEventListener('click', handleClick);
   }, []);
+
+  useEffect(() => {
+    function isTablet(): boolean {
+      return width < 876;
+    }
+
+    if (!isTablet()) {
+      setDrawerOpen(false);
+    }
+  }, [width]);
 
   function handleSignOut(): void {
     dispatch(signOut());
