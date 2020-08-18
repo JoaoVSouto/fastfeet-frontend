@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Button } from '../../components/Button';
+import StyledInput from '../../components/Input';
 
 export const Container = styled.div`
   position: relative;
@@ -69,22 +70,10 @@ export const Label = styled.label`
   transition: color 0.3s;
 `;
 
-export const Input = styled.input`
+export const Input = styled(StyledInput)`
   margin-bottom: 1.5rem;
   padding: 1.2rem 1.5rem;
-  border-radius: 0.4rem;
-  border: 1px solid ${({ theme }) => theme.borderColor};
-  transition: border-color 0.3s;
   width: 100%;
-
-  &:focus {
-    border-color: ${({ theme }) => theme.primary};
-  }
-
-  &::placeholder {
-    color: ${({ theme }) => theme.textSecondaryColor};
-    font-size: 1.6rem;
-  }
 `;
 
 export const Checkbox = styled.input.attrs({ type: 'checkbox' })`
