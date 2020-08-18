@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { ButtonLink } from '../../components/Button';
 import Input from '../../components/Input';
@@ -67,4 +67,168 @@ export const RegisterLink = styled(ButtonLink)`
     transform: scale(1.9);
     margin-right: 0.8rem;
   }
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  margin-top: 0.8rem;
+  border-collapse: separate;
+  border-spacing: 0 2.1rem;
+  text-align: left;
+
+  thead tr th:first-child,
+  tbody tr td:first-child {
+    padding-left: 2.4rem;
+  }
+
+  thead tr th:last-child,
+  tbody tr td:last-child {
+    text-align: center;
+  }
+
+  thead {
+    color: ${({ theme }) => theme.titleColor};
+    font-size: 1.6rem;
+  }
+
+  tbody {
+    tr {
+      background-color: ${({ theme }) => theme.secondary};
+      border-radius: 30px;
+      font-size: 1.6rem;
+      height: 5.7rem;
+    }
+
+    tr {
+      td:first-child {
+        border-top-left-radius: 0.4rem;
+        border-bottom-left-radius: 0.4rem;
+      }
+
+      td:last-child {
+        border-top-right-radius: 0.4rem;
+        border-bottom-right-radius: 0.4rem;
+      }
+    }
+
+    td button {
+      background-color: transparent;
+      border: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: ${({ theme }) => theme.iconColor};
+      margin-top: 0.6rem;
+
+      &:focus {
+        outline: 1px solid ${({ theme }) => theme.iconColor};
+        outline-offset: 4px;
+      }
+
+      svg {
+        transform: scale(1.5);
+      }
+    }
+
+    td span {
+      display: inline-flex;
+      justify-content: flex-start;
+      align-items: center;
+      text-align: initial;
+    }
+
+    .img-container {
+      width: 35px;
+      height: 35px;
+      margin-right: 1rem;
+
+      img {
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+  }
+`;
+
+interface IImagePlaceholder {
+  colorTheme: string;
+}
+
+export const ImagePlaceholder = styled.span<IImagePlaceholder>`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+
+  border-radius: 50%;
+
+  ${({ colorTheme }) => colorTheme}
+`;
+
+interface IStatus {
+  status: 'delivered' | 'pending' | 'withdrawal' | 'canceled';
+}
+
+export const Status = styled.span<IStatus>`
+  position: relative;
+  border-radius: 1.2rem;
+  padding: 0.5rem 0.7rem 0.5rem 2.2rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.4rem;
+
+  &::before {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    left: 0.7rem;
+    border-radius: 50%;
+    position: absolute;
+  }
+
+  ${({ status }) =>
+    status === 'delivered' &&
+    css`
+      background-color: ${({ theme }) => theme.successLight};
+      color: ${({ theme }) => theme.success};
+
+      &::before {
+        background-color: ${({ theme }) => theme.success};
+      }
+    `}
+
+  ${({ status }) =>
+    status === 'pending' &&
+    css`
+      background-color: ${({ theme }) => theme.warningLight};
+      color: ${({ theme }) => theme.warning};
+
+      &::before {
+        background-color: ${({ theme }) => theme.warning};
+      }
+    `}
+
+  ${({ status }) =>
+    status === 'withdrawal' &&
+    css`
+      background-color: ${({ theme }) => theme.infoLight};
+      color: ${({ theme }) => theme.info};
+
+      &::before {
+        background-color: ${({ theme }) => theme.info};
+      }
+    `}
+
+  ${({ status }) =>
+    status === 'canceled' &&
+    css`
+      background-color: ${({ theme }) => theme.dangerLight};
+      color: ${({ theme }) => theme.danger};
+
+      &::before {
+        background-color: ${({ theme }) => theme.danger};
+      }
+    `}
 `;
