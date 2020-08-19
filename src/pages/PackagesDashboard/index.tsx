@@ -1,6 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MdAdd, MdSearch, MdMoreHoriz } from 'react-icons/md';
+import {
+  MdAdd,
+  MdSearch,
+  MdMoreHoriz,
+  MdRemoveRedEye,
+  MdEdit,
+  MdDeleteForever,
+} from 'react-icons/md';
 
 import { randomTheme } from '../../utils/getRandomTheme';
 
@@ -14,6 +21,7 @@ import {
   ImagePlaceholder,
   Table,
   Status,
+  Dropdown,
 } from './styles';
 
 const PackagesDashboard: React.FC = () => {
@@ -69,6 +77,20 @@ const PackagesDashboard: React.FC = () => {
               <button type="button">
                 <MdMoreHoriz />
               </button>
+              <Dropdown>
+                <button type="button" className="view">
+                  <MdRemoveRedEye />
+                  Visualizar
+                </button>
+                <a href="#!" className="edit">
+                  <MdEdit />
+                  Editar
+                </a>
+                <button type="button" className="delete">
+                  <MdDeleteForever />
+                  Excluir
+                </button>
+              </Dropdown>
             </td>
           </tr>
 
