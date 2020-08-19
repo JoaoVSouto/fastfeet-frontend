@@ -237,7 +237,11 @@ export const Status = styled.span<IStatus>`
     `}
 `;
 
-export const Dropdown = styled.div`
+interface IDropdown {
+  open?: boolean;
+}
+
+export const Dropdown = styled.div<IDropdown>`
   position: absolute;
   top: 5rem;
   left: 50%;
@@ -250,6 +254,16 @@ export const Dropdown = styled.div`
   z-index: 1;
   padding: 1.6rem 1rem;
   width: 15rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+
+  ${({ open }) =>
+    open &&
+    css`
+      opacity: 1;
+      pointer-events: unset;
+    `}
 
   &::before {
     content: '';

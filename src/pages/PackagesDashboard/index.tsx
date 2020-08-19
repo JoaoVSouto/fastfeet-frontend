@@ -77,6 +77,7 @@ const PackagesDashboard: React.FC = () => {
               <button type="button">
                 <MdMoreHoriz />
               </button>
+
               <Dropdown>
                 <button type="button" className="view">
                   <MdRemoveRedEye />
