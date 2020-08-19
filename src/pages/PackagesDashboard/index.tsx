@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MdAdd,
@@ -10,6 +10,9 @@ import {
 } from 'react-icons/md';
 
 import { randomTheme } from '../../utils/getRandomTheme';
+import { getNameInitials } from '../../utils/getNameInitials';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -24,7 +27,36 @@ import {
   Dropdown,
 } from './styles';
 
+export interface IPackage {
+  id: number;
+  canceled_at?: string;
+  start_date?: string;
+  end_date?: string;
+  recipient: {
+    name: string;
+    uf: string;
+    city: string;
+  };
+  courier: {
+    name: string;
+    avatar?: {
+      path: string;
+      url: string;
+    };
+  };
+  status: 'entregue' | 'pendente' | 'retirada' | 'cancelada';
+}
+
 const PackagesDashboard: React.FC = () => {
+  const [packages, setPackages] = useState<IPackage[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await api.get('packages');
+      setPackages(response.data);
+    })();
+  }, []);
+
   return (
     <Container>
       <Title>Gerenciando encomendas</Title>
@@ -54,121 +86,54 @@ const PackagesDashboard: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr>
-            <td>#01</td>
-            <td>Ludwig van Beethoven</td>
-            <td>
-              <span>
-                <span className="img-container">
-                  <img
-                    src="https://api.adorable.io/avatars/face/eyes5/nose7/mouth7/6633cc"
-                    alt="John Doe"
-                  />
+          {packages.map(pkg => (
+            <tr key={pkg.id}>
+              <td>{`#${String(pkg.id).padStart(2, '0')}`}</td>
+              <td>{pkg.recipient.name}</td>
+              <td>
+                <span>
+                  <span className="img-container">
+                    {pkg.courier.avatar ? (
+                      <img
+                        src={pkg.courier.avatar.url}
+                        alt={pkg.courier.name}
+                      />
+                    ) : (
+                      <ImagePlaceholder colorTheme={randomTheme()}>
+                        {getNameInitials(pkg.courier.name)}
+                      </ImagePlaceholder>
+                    )}
+                  </span>
+                  {pkg.courier.name}
                 </span>
-                John Doe
-              </span>
-            </td>
-            <td>Rio do Sul</td>
-            <td>SC</td>
-            <td>
-              <Status status="delivered">Entregue</Status>
-            </td>
-            <td>
-              <button type="button">
-                <MdMoreHoriz />
-              </button>
-
-              <Dropdown>
-                <button type="button" className="view">
-                  <MdRemoveRedEye />
-                  Visualizar
+              </td>
+              <td>{pkg.recipient.city}</td>
+              <td>{pkg.recipient.uf}</td>
+              <td>
+                <Status status={pkg.status}>{pkg.status}</Status>
+              </td>
+              <td>
+                <button type="button">
+                  <MdMoreHoriz />
                 </button>
-                <a href="#!" className="edit">
-                  <MdEdit />
-                  Editar
-                </a>
-                <button type="button" className="delete">
-                  <MdDeleteForever />
-                  Excluir
-                </button>
-              </Dropdown>
-            </td>
-          </tr>
 
-          <tr>
-            <td>#02</td>
-            <td>Wolfgang Amadeus</td>
-            <td>
-              <span>
-                <span className="img-container">
-                  <ImagePlaceholder colorTheme={randomTheme()}>
-                    GA
-                  </ImagePlaceholder>
-                </span>
-                Gaspar Antunes
-              </span>
-            </td>
-            <td>Natal</td>
-            <td>RN</td>
-            <td>
-              <Status status="pending">Pendente</Status>
-            </td>
-            <td>
-              <button type="button">
-                <MdMoreHoriz />
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>#03</td>
-            <td>Johann Sebastian Bach</td>
-            <td>
-              <span>
-                <span className="img-container">
-                  <ImagePlaceholder colorTheme={randomTheme()}>
-                    DJ
-                  </ImagePlaceholder>
-                </span>
-                Dai Jiang
-              </span>
-            </td>
-            <td>João Pessoa</td>
-            <td>PB</td>
-            <td>
-              <Status status="withdrawal">Retirada</Status>
-            </td>
-            <td>
-              <button type="button">
-                <MdMoreHoriz />
-              </button>
-            </td>
-          </tr>
-
-          <tr>
-            <td>#04</td>
-            <td>Frédéric Chopin</td>
-            <td>
-              <span>
-                <span className="img-container">
-                  <ImagePlaceholder colorTheme={randomTheme()}>
-                    TH
-                  </ImagePlaceholder>
-                </span>
-                Tom Hanson
-              </span>
-            </td>
-            <td>Recife</td>
-            <td>PE</td>
-            <td>
-              <Status status="canceled">Cancelada</Status>
-            </td>
-            <td>
-              <button type="button">
-                <MdMoreHoriz />
-              </button>
-            </td>
-          </tr>
+                <Dropdown>
+                  <button type="button" className="view">
+                    <MdRemoveRedEye />
+                    Visualizar
+                  </button>
+                  <a href="#!" className="edit">
+                    <MdEdit />
+                    Editar
+                  </a>
+                  <button type="button" className="delete">
+                    <MdDeleteForever />
+                    Excluir
+                  </button>
+                </Dropdown>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Container>

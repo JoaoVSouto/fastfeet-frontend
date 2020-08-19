@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import { ButtonLink } from '../../components/Button';
 import Input from '../../components/Input';
 
+import { IPackage } from '.';
+
 export const Container = styled.main`
   padding: 3.4rem 12rem;
 `;
@@ -172,7 +174,7 @@ export const ImagePlaceholder = styled.span<IImagePlaceholder>`
 `;
 
 interface IStatus {
-  status: 'delivered' | 'pending' | 'withdrawal' | 'canceled';
+  status: IPackage['status'];
 }
 
 export const Status = styled.span<IStatus>`
@@ -193,7 +195,7 @@ export const Status = styled.span<IStatus>`
   }
 
   ${({ status }) =>
-    status === 'delivered' &&
+    status === 'entregue' &&
     css`
       background-color: ${({ theme }) => theme.successLight};
       color: ${({ theme }) => theme.success};
@@ -204,7 +206,7 @@ export const Status = styled.span<IStatus>`
     `}
 
   ${({ status }) =>
-    status === 'pending' &&
+    status === 'pendente' &&
     css`
       background-color: ${({ theme }) => theme.warningLight};
       color: ${({ theme }) => theme.warning};
@@ -215,7 +217,7 @@ export const Status = styled.span<IStatus>`
     `}
 
   ${({ status }) =>
-    status === 'withdrawal' &&
+    status === 'retirada' &&
     css`
       background-color: ${({ theme }) => theme.infoLight};
       color: ${({ theme }) => theme.info};
@@ -226,7 +228,7 @@ export const Status = styled.span<IStatus>`
     `}
 
   ${({ status }) =>
-    status === 'canceled' &&
+    status === 'cancelada' &&
     css`
       background-color: ${({ theme }) => theme.dangerLight};
       color: ${({ theme }) => theme.danger};
