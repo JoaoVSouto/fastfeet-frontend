@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
   background-color: ${({ theme: { secondaryDark } }) => secondaryDark};
 `;
