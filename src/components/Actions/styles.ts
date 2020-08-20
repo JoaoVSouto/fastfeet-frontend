@@ -22,6 +22,7 @@ export const Button = styled.button`
 interface IDropdown {
   open?: boolean;
   intersected?: boolean;
+  isMobile?: boolean;
 }
 
 export const Dropdown = styled.div<IDropdown>`
@@ -64,6 +65,16 @@ export const Dropdown = styled.div<IDropdown>`
         filter: drop-shadow(0px 3px 1px #00000026) !important;
       }
     `}
+
+    ${({ isMobile }) =>
+      isMobile &&
+      css`
+        left: -3rem;
+
+        &::before {
+          left: 82% !important;
+        }
+      `}
 
   &::before {
     content: '';

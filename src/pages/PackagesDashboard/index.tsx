@@ -26,6 +26,7 @@ import {
   ImagePlaceholder,
   CardsContainer,
   Card,
+  ActionsContainer,
   Table,
   Status,
 } from './styles';
@@ -138,6 +139,23 @@ const PackagesDashboard: React.FC = () => {
 
       <CardsContainer>
         <Card>
+          <ActionsContainer>
+            <Actions isMobile>
+              <button type="button" className="view">
+                <MdRemoveRedEye />
+                Visualizar
+              </button>
+              <a href="#!" className="edit">
+                <MdEdit />
+                Editar
+              </a>
+              <button type="button" className="delete">
+                <MdDeleteForever />
+                Excluir
+              </button>
+            </Actions>
+          </ActionsContainer>
+
           <div className="card-row">
             <strong>ID</strong>
             #01

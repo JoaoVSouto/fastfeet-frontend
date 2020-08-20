@@ -5,7 +5,11 @@ import { useIntersection } from '../../hooks/useIntersection';
 
 import { Button, Dropdown } from './styles';
 
-const Actions: React.FC = ({ children }) => {
+interface IProps {
+  isMobile?: boolean;
+}
+
+const Actions: React.FC<IProps> = ({ children, isMobile }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOutsidePage, setIsOutsidePage] = useState(false);
 
@@ -46,13 +50,14 @@ const Actions: React.FC = ({ children }) => {
   useEffect(() => {
     if (
       !isOutsidePage &&
+      !isMobile &&
       isOpen &&
       intersection &&
       intersection.intersectionRatio < 1
     ) {
       setIsOutsidePage(true);
     }
-  }, [intersection, isOutsidePage, isOpen]);
+  }, [intersection, isOutsidePage, isOpen, isMobile]);
 
   return (
     <>
@@ -60,7 +65,12 @@ const Actions: React.FC = ({ children }) => {
         <MdMoreHoriz />
       </Button>
 
-      <Dropdown open={isOpen} ref={dropdownRef} intersected={isOutsidePage}>
+      <Dropdown
+        open={isOpen}
+        ref={dropdownRef}
+        intersected={isOutsidePage}
+        isMobile={isMobile}
+      >
         {children}
       </Dropdown>
     </>

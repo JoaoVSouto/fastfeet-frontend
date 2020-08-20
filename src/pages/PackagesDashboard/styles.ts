@@ -102,6 +102,7 @@ export const CardsContainer = styled.section`
 `;
 
 export const Card = styled.article`
+  position: relative;
   background-color: ${({ theme }) => theme.secondary};
   border-radius: 0.4rem;
   padding: 2rem;
@@ -122,6 +123,25 @@ export const Card = styled.article`
     strong {
       margin-right: 1rem;
     }
+  }
+`;
+
+export const ActionsContainer = styled.div`
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  background-color: ${({ theme }) => theme.secondary};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.09);
+
+  button {
+    margin: 0;
+    height: 100%;
+    width: 100%;
   }
 `;
 
