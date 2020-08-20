@@ -24,6 +24,12 @@ export const Controls = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${down('smPhone')} {
+    margin-top: 1.5rem;
+    flex-direction: column-reverse;
+    align-items: initial;
+  }
 `;
 
 export const SearchContainer = styled.div`
@@ -52,6 +58,10 @@ export const SearchInput = styled(Input)`
   padding-right: 1.5rem;
   font-size: 1.4rem;
 
+  ${down('smPhone')} {
+    width: 100%;
+  }
+
   &::placeholder {
     font-size: inherit;
   }
@@ -68,6 +78,10 @@ export const RegisterLink = styled(ButtonLink)`
   text-transform: uppercase;
   font-size: 1.4rem;
   user-select: none;
+
+  ${down('smPhone')} {
+    margin-bottom: 1.5rem;
+  }
 
   svg {
     color: ${({ theme }) => theme.secondary};

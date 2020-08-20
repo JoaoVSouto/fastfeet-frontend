@@ -143,7 +143,7 @@ interface IDrawerProps {
 
 export const Drawer = styled.nav<IDrawerProps>`
   height: 100vh;
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   background-color: ${({ theme }) => theme.secondary};
