@@ -137,22 +137,23 @@ export const Table = styled.table`
     }
 
     td span {
-      display: inline-flex;
+      display: flex;
       justify-content: flex-start;
       align-items: center;
       text-align: initial;
     }
+  }
+`;
 
-    .img-container {
-      width: 35px;
-      height: 35px;
-      margin-right: 1rem;
+export const ImageContainer = styled.span`
+  display: inline-flex;
+  width: 35px;
+  height: 35px;
+  margin-right: 1rem;
 
-      img {
-        width: 100%;
-        border-radius: 50%;
-      }
-    }
+  img {
+    width: 100%;
+    border-radius: 50%;
   }
 `;
 
@@ -178,6 +179,7 @@ interface IStatus {
 }
 
 export const Status = styled.span<IStatus>`
+  display: inline-flex !important;
   position: relative;
   border-radius: 1.2rem;
   padding: 0.5rem 0.7rem 0.5rem 2.2rem;

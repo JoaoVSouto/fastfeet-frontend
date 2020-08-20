@@ -22,6 +22,7 @@ import {
   SearchContainer,
   SearchInput,
   RegisterLink,
+  ImageContainer,
   ImagePlaceholder,
   CardsContainer,
   Card,
@@ -94,7 +95,7 @@ const PackagesDashboard: React.FC = () => {
               <td>{pkg.recipient.name}</td>
               <td>
                 <span>
-                  <span className="img-container">
+                  <ImageContainer>
                     {pkg.courier.avatar ? (
                       <img
                         src={pkg.courier.avatar.url}
@@ -105,7 +106,7 @@ const PackagesDashboard: React.FC = () => {
                         {getNameInitials(pkg.courier.name)}
                       </ImagePlaceholder>
                     )}
-                  </span>
+                  </ImageContainer>
                   {pkg.courier.name}
                 </span>
               </td>
@@ -149,9 +150,9 @@ const PackagesDashboard: React.FC = () => {
 
           <div className="card-row">
             <strong>Entregador</strong>
-            <div className="img-container">
+            <ImageContainer>
               <ImagePlaceholder colorTheme={randomTheme()}>JD</ImagePlaceholder>
-            </div>
+            </ImageContainer>
             John Doe
           </div>
 
@@ -166,6 +167,7 @@ const PackagesDashboard: React.FC = () => {
           </div>
 
           <div className="card-row">
+            <strong>Status</strong>
             <Status status="entregue">entregue</Status>
           </div>
         </Card>
