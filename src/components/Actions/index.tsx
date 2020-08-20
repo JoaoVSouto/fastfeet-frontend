@@ -12,7 +12,7 @@ const Actions: React.FC = ({ children }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const [intersection, removeIntersection] = useIntersection(dropdownRef, {
+  const [intersection] = useIntersection(dropdownRef, {
     root: null,
     rootMargin: '0px',
     threshold: 1,
@@ -34,11 +34,25 @@ const Actions: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isOpen && intersection && intersection.intersectionRatio < 1) {
+    const handleWindowScroll = (): void => {
+      setIsOutsidePage(false);
+    };
+
+    window.addEventListener('scroll', handleWindowScroll);
+
+    return () => window.removeEventListener('scroll', handleWindowScroll);
+  }, []);
+
+  useEffect(() => {
+    if (
+      !isOutsidePage &&
+      isOpen &&
+      intersection &&
+      intersection.intersectionRatio < 1
+    ) {
       setIsOutsidePage(true);
-      removeIntersection();
     }
-  }, [intersection, removeIntersection, setIsOutsidePage, isOpen]);
+  }, [intersection, isOutsidePage, isOpen]);
 
   return (
     <>
