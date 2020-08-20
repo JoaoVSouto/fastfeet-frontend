@@ -37,14 +37,16 @@ export const Dropdown = styled.div<IDropdown>`
   padding: 1.6rem 1rem;
   width: 15rem;
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: all 0.3s;
 
   ${({ open }) =>
     open &&
     css`
       opacity: 1;
       pointer-events: unset;
+      visibility: unset;
     `}
 
   &::before {
@@ -64,6 +66,8 @@ export const Dropdown = styled.div<IDropdown>`
 
   button,
   a {
+    background-color: transparent;
+    border: 0;
     display: flex;
     margin: 0 !important;
     justify-content: flex-start !important;
