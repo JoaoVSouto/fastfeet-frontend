@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { down } from 'styled-breakpoints';
 
 import { ButtonLink } from '../../components/Button';
 import Input from '../../components/Input';
@@ -7,6 +8,10 @@ import { IPackage } from '.';
 
 export const Container = styled.main`
   padding: 3.4rem 12rem;
+
+  ${down('phone')} {
+    padding: 1.7rem 3rem;
+  }
 `;
 
 export const Title = styled.h1`
@@ -71,12 +76,26 @@ export const RegisterLink = styled(ButtonLink)`
   }
 `;
 
+export const CardsContainer = styled.section`
+  display: none;
+
+  ${down('tablet')} {
+    display: block;
+  }
+`;
+
+export const Card = styled.article``;
+
 export const Table = styled.table`
   width: 100%;
   margin-top: 0.8rem;
   border-collapse: separate;
   border-spacing: 0 2.1rem;
   text-align: left;
+
+  ${down('tablet')} {
+    display: none;
+  }
 
   thead tr th:first-child,
   tbody tr td:first-child {
@@ -173,6 +192,8 @@ export const Status = styled.span<IStatus>`
     left: 0.7rem;
     border-radius: 50%;
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   ${({ status }) =>

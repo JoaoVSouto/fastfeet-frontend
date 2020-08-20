@@ -23,6 +23,8 @@ import {
   SearchInput,
   RegisterLink,
   ImagePlaceholder,
+  CardsContainer,
+  Card,
   Table,
   Status,
 } from './styles';
@@ -132,6 +134,42 @@ const PackagesDashboard: React.FC = () => {
           ))}
         </tbody>
       </Table>
+
+      <CardsContainer>
+        <Card>
+          <div className="card-row">
+            <strong>ID</strong>
+            #01
+          </div>
+
+          <div className="card-row">
+            <strong>Destinatário</strong>
+            Ludwig van Beethoven
+          </div>
+
+          <div className="card-row">
+            <strong>Entregador</strong>
+            <div className="img-container">
+              <ImagePlaceholder colorTheme={randomTheme()}>JD</ImagePlaceholder>
+            </div>
+            John Doe
+          </div>
+
+          <div className="card-row">
+            <strong>Cidade</strong>
+            Rio do Sul
+          </div>
+
+          <div className="card-row">
+            <strong>Estado</strong>
+            Santa Catarina
+          </div>
+
+          <div className="card-row">
+            <Status status="entregue">entregue</Status>
+          </div>
+        </Card>
+      </CardsContainer>
     </Container>
   );
 };

@@ -6,7 +6,7 @@ export interface IHamburguerProps {
 }
 
 export const Hamburguer = styled.button<IHamburguerProps>`
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   right: 1.5rem;
   transform: rotate(0deg) scale(0.5);

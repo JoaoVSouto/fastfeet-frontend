@@ -152,6 +152,7 @@ export const Drawer = styled.nav<IDrawerProps>`
   box-shadow: 0 0 3px 3px ${({ theme }) => rgba(theme.borderColor, 0.8)};
   transform: translateX(100%) scaleX(0);
   transition: transform 0.3s;
+  z-index: 1;
 
   ${({ open }) =>
     open &&
