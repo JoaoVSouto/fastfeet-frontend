@@ -21,6 +21,7 @@ export const Button = styled.button`
 
 interface IDropdown {
   open?: boolean;
+  intersected?: boolean;
 }
 
 export const Dropdown = styled.div<IDropdown>`
@@ -47,6 +48,21 @@ export const Dropdown = styled.div<IDropdown>`
       opacity: 1;
       pointer-events: unset;
       visibility: unset;
+    `}
+
+  ${({ intersected }) =>
+    intersected &&
+    css`
+      top: unset;
+      bottom: 5rem;
+
+      &::before {
+        top: unset !important;
+        bottom: -10px;
+        border-bottom: 0 !important;
+        border-top: 12px solid ${({ theme }) => theme.secondary};
+        filter: drop-shadow(0px 3px 1px #00000026) !important;
+      }
     `}
 
   &::before {

@@ -1,13 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MdMoreHoriz } from 'react-icons/md';
 
+import { useIntersection } from '../../hooks/useIntersection';
+
 import { Button, Dropdown } from './styles';
 
 const Actions: React.FC = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOutsidePage, setIsOutsidePage] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const [intersection, removeIntersection] = useIntersection(dropdownRef, {
+    root: null,
+    rootMargin: '0px',
+    threshold: 1,
+  });
 
   useEffect(() => {
     const handleClick = (e: MouseEvent): void => {
@@ -24,13 +33,20 @@ const Actions: React.FC = ({ children }) => {
     return () => document.removeEventListener('click', handleClick);
   }, []);
 
+  useEffect(() => {
+    if (isOpen && intersection && intersection.intersectionRatio < 1) {
+      setIsOutsidePage(true);
+      removeIntersection();
+    }
+  }, [intersection, removeIntersection, setIsOutsidePage, isOpen]);
+
   return (
     <>
       <Button type="button" onClick={() => setIsOpen(!isOpen)} ref={buttonRef}>
         <MdMoreHoriz />
       </Button>
 
-      <Dropdown open={isOpen} ref={dropdownRef}>
+      <Dropdown open={isOpen} ref={dropdownRef} intersected={isOutsidePage}>
         {children}
       </Dropdown>
     </>
