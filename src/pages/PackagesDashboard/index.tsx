@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
   MdAdd,
   MdSearch,
-  MdMoreHoriz,
   MdRemoveRedEye,
   MdEdit,
   MdDeleteForever,
@@ -13,6 +12,8 @@ import { randomTheme } from '../../utils/getRandomTheme';
 import { getNameInitials } from '../../utils/getNameInitials';
 
 import api from '../../services/api';
+
+import Actions from '../../components/Actions';
 
 import {
   Container,
@@ -24,7 +25,6 @@ import {
   ImagePlaceholder,
   Table,
   Status,
-  Dropdown,
 } from './styles';
 
 export interface IPackage {
@@ -113,11 +113,7 @@ const PackagesDashboard: React.FC = () => {
                 <Status status={pkg.status}>{pkg.status}</Status>
               </td>
               <td>
-                <button type="button">
-                  <MdMoreHoriz />
-                </button>
-
-                <Dropdown>
+                <Actions>
                   <button type="button" className="view">
                     <MdRemoveRedEye />
                     Visualizar
@@ -130,7 +126,7 @@ const PackagesDashboard: React.FC = () => {
                     <MdDeleteForever />
                     Excluir
                   </button>
-                </Dropdown>
+                </Actions>
               </td>
             </tr>
           ))}
