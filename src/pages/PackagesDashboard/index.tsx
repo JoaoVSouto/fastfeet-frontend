@@ -50,6 +50,7 @@ export interface IPackage {
     };
   };
   status: 'entregue' | 'pendente' | 'retirada' | 'cancelada';
+  colorTheme: string;
 }
 
 const PackagesDashboard: React.FC = () => {
@@ -73,7 +74,13 @@ const PackagesDashboard: React.FC = () => {
   useEffect(() => {
     (async () => {
       const response = await api.get('packages');
-      setPackages(response.data);
+
+      const packagesWithThemes = response.data.map((pkg: IPackage) => ({
+        ...pkg,
+        colorTheme: randomTheme(),
+      }));
+
+      setPackages(packagesWithThemes);
     })();
   }, []);
 
@@ -129,7 +136,7 @@ const PackagesDashboard: React.FC = () => {
                           alt={pkg.courier.name}
                         />
                       ) : (
-                        <ImagePlaceholder colorTheme={randomTheme()}>
+                        <ImagePlaceholder colorTheme={pkg.colorTheme}>
                           {getNameInitials(pkg.courier.name)}
                         </ImagePlaceholder>
                       )}
@@ -199,7 +206,7 @@ const PackagesDashboard: React.FC = () => {
                   {pkg.courier.avatar ? (
                     <img src={pkg.courier.avatar.url} alt={pkg.courier.name} />
                   ) : (
-                    <ImagePlaceholder colorTheme={randomTheme()}>
+                    <ImagePlaceholder colorTheme={pkg.colorTheme}>
                       {getNameInitials(pkg.courier.name)}
                     </ImagePlaceholder>
                   )}
