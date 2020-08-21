@@ -16,6 +16,8 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 import api from '../../services/api';
 
 import Actions from '../../components/Actions';
+import Table from '../../components/Table';
+import Card, { CardsContainer } from '../../components/Card';
 
 import {
   Container,
@@ -26,10 +28,7 @@ import {
   RegisterLink,
   ImageContainer,
   ImagePlaceholder,
-  CardsContainer,
-  Card,
   ActionsContainer,
-  Table,
   Status,
 } from './styles';
 
@@ -55,6 +54,7 @@ export interface IPackage {
 
 const PackagesDashboard: React.FC = () => {
   const [packages, setPackages] = useState<IPackage[]>([]);
+  const [packagesSearch, setPackagesSearch] = useState('');
 
   const { width } = useWindowSize();
 
@@ -77,6 +77,10 @@ const PackagesDashboard: React.FC = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log(packagesSearch);
+  }, [packagesSearch]);
+
   return (
     <Container>
       <Title>Gerenciando encomendas</Title>
@@ -84,7 +88,12 @@ const PackagesDashboard: React.FC = () => {
       <Controls>
         <SearchContainer>
           <MdSearch />
-          <SearchInput type="text" placeholder="Buscar por encomendas" />
+          <SearchInput
+            type="text"
+            placeholder="Buscar por encomendas"
+            value={packagesSearch}
+            onChange={e => setPackagesSearch(e.target.value)}
+          />
         </SearchContainer>
         <RegisterLink as={Link} to="/packages/register">
           <MdAdd />
