@@ -224,7 +224,9 @@ const PackagesDashboard: React.FC = () => {
 
               <div className="card-row">
                 <strong>Produto</strong>
-                {pkg.product}
+                <Highlight toHighlight={packagesSearch}>
+                  {pkg.product}
+                </Highlight>
               </div>
 
               <div className="card-row">
