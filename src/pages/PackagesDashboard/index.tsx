@@ -37,6 +37,7 @@ export interface IPackage {
   canceled_at?: string;
   start_date?: string;
   end_date?: string;
+  product: string;
   recipient: {
     name: string;
     uf: string;
@@ -73,7 +74,9 @@ const PackagesDashboard: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await api.get('packages');
+      const response = await api.get('packages', {
+        params: { q: packagesSearch },
+      });
 
       const packagesWithThemes = response.data.map((pkg: IPackage) => ({
         ...pkg,
@@ -82,10 +85,6 @@ const PackagesDashboard: React.FC = () => {
 
       setPackages(packagesWithThemes);
     })();
-  }, []);
-
-  useEffect(() => {
-    console.log(packagesSearch);
   }, [packagesSearch]);
 
   return (
@@ -114,6 +113,7 @@ const PackagesDashboard: React.FC = () => {
             <tr>
               <th>ID</th>
               <th>Destinatário</th>
+              <th>Produto</th>
               <th>Entregador</th>
               <th>Cidade</th>
               <th>Estado</th>
@@ -127,6 +127,7 @@ const PackagesDashboard: React.FC = () => {
               <tr key={pkg.id}>
                 <td>{`#${String(pkg.id).padStart(2, '0')}`}</td>
                 <td>{pkg.recipient.name}</td>
+                <td>{pkg.product}</td>
                 <td>
                   <span>
                     <ImageContainer>
@@ -198,6 +199,11 @@ const PackagesDashboard: React.FC = () => {
               <div className="card-row">
                 <strong>Destinatário</strong>
                 {pkg.recipient.name}
+              </div>
+
+              <div className="card-row">
+                <strong>Produto</strong>
+                {pkg.product}
               </div>
 
               <div className="card-row">
