@@ -10,7 +10,7 @@ export const Container = styled.main`
   padding: 3.4rem 12rem;
 
   ${down('phone')} {
-    padding: 1.7rem 3rem;
+    padding: 2.4rem 3rem;
   }
 `;
 
@@ -111,6 +111,8 @@ export const Card = styled.article`
   .card-row {
     padding: 1rem;
     border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
 
     &:nth-child(2n) {
       background-color: #eeeeee5e;
@@ -213,6 +215,11 @@ export const ImageContainer = styled.span`
   img {
     width: 100%;
     border-radius: 50%;
+  }
+
+  span {
+    width: inherit;
+    height: inherit;
   }
 `;
 

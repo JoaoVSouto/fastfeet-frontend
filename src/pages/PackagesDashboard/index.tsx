@@ -138,57 +138,65 @@ const PackagesDashboard: React.FC = () => {
       </Table>
 
       <CardsContainer>
-        <Card>
-          <ActionsContainer>
-            <Actions isMobile>
-              <button type="button" className="view">
-                <MdRemoveRedEye />
-                Visualizar
-              </button>
-              <a href="#!" className="edit">
-                <MdEdit />
-                Editar
-              </a>
-              <button type="button" className="delete">
-                <MdDeleteForever />
-                Excluir
-              </button>
-            </Actions>
-          </ActionsContainer>
+        {packages.map(pkg => (
+          <Card key={pkg.id}>
+            <ActionsContainer>
+              <Actions isMobile>
+                <button type="button" className="view">
+                  <MdRemoveRedEye />
+                  Visualizar
+                </button>
+                <a href="#!" className="edit">
+                  <MdEdit />
+                  Editar
+                </a>
+                <button type="button" className="delete">
+                  <MdDeleteForever />
+                  Excluir
+                </button>
+              </Actions>
+            </ActionsContainer>
 
-          <div className="card-row">
-            <strong>ID</strong>
-            #01
-          </div>
+            <div className="card-row">
+              <strong>ID</strong>
+              {`#${String(pkg.id).padStart(2, '0')}`}
+            </div>
 
-          <div className="card-row">
-            <strong>Destinatário</strong>
-            Ludwig van Beethoven
-          </div>
+            <div className="card-row">
+              <strong>Destinatário</strong>
+              {pkg.recipient.name}
+            </div>
 
-          <div className="card-row">
-            <strong>Entregador</strong>
-            <ImageContainer>
-              <ImagePlaceholder colorTheme={randomTheme()}>JD</ImagePlaceholder>
-            </ImageContainer>
-            John Doe
-          </div>
+            <div className="card-row">
+              <strong>Entregador</strong>
+              <ImageContainer>
+                {pkg.courier.avatar ? (
+                  <img src={pkg.courier.avatar.url} alt={pkg.courier.name} />
+                ) : (
+                  <ImagePlaceholder colorTheme={randomTheme()}>
+                    {getNameInitials(pkg.courier.name)}
+                  </ImagePlaceholder>
+                )}
+              </ImageContainer>
+              {pkg.courier.name}
+            </div>
 
-          <div className="card-row">
-            <strong>Cidade</strong>
-            Rio do Sul
-          </div>
+            <div className="card-row">
+              <strong>Cidade</strong>
+              {pkg.recipient.city}
+            </div>
 
-          <div className="card-row">
-            <strong>Estado</strong>
-            Santa Catarina
-          </div>
+            <div className="card-row">
+              <strong>Estado</strong>
+              {pkg.recipient.uf}
+            </div>
 
-          <div className="card-row">
-            <strong>Status</strong>
-            <Status status="entregue">entregue</Status>
-          </div>
-        </Card>
+            <div className="card-row">
+              <strong>Status</strong>
+              <Status status={pkg.status}>{pkg.status}</Status>
+            </div>
+          </Card>
+        ))}
       </CardsContainer>
     </Container>
   );

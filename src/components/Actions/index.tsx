@@ -50,14 +50,13 @@ const Actions: React.FC<IProps> = ({ children, isMobile }) => {
   useEffect(() => {
     if (
       !isOutsidePage &&
-      !isMobile &&
       isOpen &&
       intersection &&
       intersection.intersectionRatio < 1
     ) {
       setIsOutsidePage(true);
     }
-  }, [intersection, isOutsidePage, isOpen, isMobile]);
+  }, [intersection, isOutsidePage, isOpen]);
 
   return (
     <>
