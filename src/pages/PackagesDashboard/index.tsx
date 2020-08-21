@@ -18,6 +18,7 @@ import api from '../../services/api';
 import Actions from '../../components/Actions';
 import Table from '../../components/Table';
 import Card, { CardsContainer } from '../../components/Card';
+import Highlight from '../../components/Highlight';
 
 import {
   Container,
@@ -127,7 +128,11 @@ const PackagesDashboard: React.FC = () => {
               <tr key={pkg.id}>
                 <td>{`#${String(pkg.id).padStart(2, '0')}`}</td>
                 <td>{pkg.recipient.name}</td>
-                <td>{pkg.product}</td>
+                <td>
+                  <Highlight toHighlight={packagesSearch}>
+                    {pkg.product}
+                  </Highlight>
+                </td>
                 <td>
                   <span>
                     <ImageContainer>
