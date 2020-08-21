@@ -14,6 +14,7 @@
     "formik": "^2.1.5",
     "history": "4.10.1",
     "immer": "^7.0.7",
+    "lodash.debounce": "^4.0.8",
     "polished": "^3.6.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -52,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.6",
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "^5.1.2",

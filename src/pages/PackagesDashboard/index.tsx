@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 import {
   MdAdd,
@@ -7,6 +7,7 @@ import {
   MdEdit,
   MdDeleteForever,
 } from 'react-icons/md';
+import debounce from 'lodash.debounce';
 
 import { randomTheme } from '../../utils/getRandomTheme';
 import { getNameInitials } from '../../utils/getNameInitials';
@@ -73,20 +74,35 @@ const PackagesDashboard: React.FC = () => {
     return false;
   }, [width]);
 
+  async function retrievePackages(search = ''): Promise<void> {
+    const response = await api.get('packages', {
+      params: { q: search },
+    });
+
+    const packagesWithThemes = response.data.map((pkg: IPackage) => ({
+      ...pkg,
+      colorTheme: randomTheme(),
+    }));
+
+    setPackages(packagesWithThemes);
+  }
+
+  const retrievePackagesDebounced = useMemo(
+    () => debounce((pkgSearch: string) => retrievePackages(pkgSearch), 300),
+    []
+  );
+
   useEffect(() => {
-    (async () => {
-      const response = await api.get('packages', {
-        params: { q: packagesSearch },
-      });
+    retrievePackages();
+  }, []);
 
-      const packagesWithThemes = response.data.map((pkg: IPackage) => ({
-        ...pkg,
-        colorTheme: randomTheme(),
-      }));
+  function handlePackagesSearchChange(e: ChangeEvent<HTMLInputElement>): void {
+    const { value } = e.target;
 
-      setPackages(packagesWithThemes);
-    })();
-  }, [packagesSearch]);
+    setPackagesSearch(value);
+
+    retrievePackagesDebounced(value);
+  }
 
   return (
     <Container>
@@ -99,7 +115,7 @@ const PackagesDashboard: React.FC = () => {
             type="text"
             placeholder="Buscar por encomendas"
             value={packagesSearch}
-            onChange={e => setPackagesSearch(e.target.value)}
+            onChange={handlePackagesSearchChange}
           />
         </SearchContainer>
         <RegisterLink as={Link} to="/packages/register">
