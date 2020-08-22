@@ -32,6 +32,7 @@ import {
   ImagePlaceholder,
   ActionsContainer,
   Status,
+  NotFound,
 } from './styles';
 
 export interface IPackage {
@@ -124,7 +125,14 @@ const PackagesDashboard: React.FC = () => {
         </RegisterLink>
       </Controls>
 
-      {isDesktop ? (
+      {packages.length === 0 ? (
+        <NotFound>
+          Nenhuma encomenda encontrada&nbsp;
+          <span role="img" aria-label="expressão triste">
+            😢
+          </span>
+        </NotFound>
+      ) : isDesktop ? (
         <Table>
           <thead>
             <tr>
