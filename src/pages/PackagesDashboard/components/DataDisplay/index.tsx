@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { MdRemoveRedEye, MdEdit, MdDeleteForever } from 'react-icons/md';
 
 import { getNameInitials } from '../../../../utils/getNameInitials';
 
@@ -10,6 +9,7 @@ import Table from '../../../../components/Table';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
 import Modal from '../../../../components/Modal';
+import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
 
@@ -91,18 +91,7 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
                 </td>
                 <td>
                   <Actions>
-                    <button type="button" className="view">
-                      <MdRemoveRedEye />
-                      Visualizar
-                    </button>
-                    <a href="#!" className="edit">
-                      <MdEdit />
-                      Editar
-                    </a>
-                    <button type="button" className="delete">
-                      <MdDeleteForever />
-                      Excluir
-                    </button>
+                    <ActionsButtons />
                   </Actions>
                 </td>
               </tr>
@@ -115,18 +104,7 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
             <Card key={pkg.id}>
               <ActionsContainer>
                 <Actions isMobile>
-                  <button type="button" className="view">
-                    <MdRemoveRedEye />
-                    Visualizar
-                  </button>
-                  <a href="#!" className="edit">
-                    <MdEdit />
-                    Editar
-                  </a>
-                  <button type="button" className="delete">
-                    <MdDeleteForever />
-                    Excluir
-                  </button>
+                  <ActionsButtons />
                 </Actions>
               </ActionsContainer>
 
