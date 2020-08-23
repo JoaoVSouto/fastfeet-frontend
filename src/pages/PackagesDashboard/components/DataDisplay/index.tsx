@@ -13,6 +13,7 @@ import Table from '../../../../components/Table';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
 import Modal from '../../../../components/Modal';
+import TeaLoading from '../../../../components/TeaLoading';
 import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
@@ -23,6 +24,7 @@ import {
   Status,
   ActionsContainer,
   InfoBox,
+  ModalLoadingContainer,
 } from './styles';
 
 interface IPackageInfo {
@@ -67,6 +69,8 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
   }, [width]);
 
   async function viewPackageInfo(packageId: number): Promise<void> {
+    setIsModalOpen(true);
+
     try {
       const { data } = await api.get<IPackageInfo>(`packages/${packageId}`);
 
@@ -84,16 +88,17 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
       };
 
       setPackageInfo(packageInfoTreated);
-      setIsModalOpen(true);
     } catch {
       toast.error(
         'Ops... Algum erro aconteceu ao requisitar informações da encomenda.'
       );
+      setIsModalOpen(false);
     }
   }
 
-  function closeModal(): void {
+  function resetModalState(): void {
     setIsModalOpen(false);
+    setPackageInfo(null);
   }
 
   return (
@@ -217,8 +222,8 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
         </CardsContainer>
       )}
 
-      <Modal open={isModalOpen} onRequestClose={closeModal}>
-        {packageInfo && (
+      <Modal open={isModalOpen} onRequestClose={resetModalState}>
+        {packageInfo ? (
           <>
             <InfoBox>
               <h5>Informações da encomenda</h5>
@@ -270,6 +275,11 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
               </InfoBox>
             )}
           </>
+        ) : (
+          <ModalLoadingContainer>
+            <TeaLoading />
+            <strong>Carregando...</strong>
+          </ModalLoadingContainer>
         )}
       </Modal>
     </>

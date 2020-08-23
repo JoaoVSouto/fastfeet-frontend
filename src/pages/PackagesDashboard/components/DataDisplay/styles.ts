@@ -151,3 +151,15 @@ export const InfoBox = styled.div`
     margin-top: 1rem;
   }
 `;
+
+export const ModalLoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  strong {
+    color: ${({ theme }) => theme.primary};
+    margin-top: 1rem;
+  }
+`;
