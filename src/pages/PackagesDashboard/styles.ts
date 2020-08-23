@@ -91,4 +91,5 @@ export const RegisterLink = styled(ButtonLink)`
 export const NotFound = styled.h4`
   margin-top: 2.4rem;
   text-align: center;
+  font-weight: normal;
 `;
