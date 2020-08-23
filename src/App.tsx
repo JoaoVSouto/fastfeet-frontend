@@ -4,6 +4,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components';
 import { ToastContainer } from 'react-toastify';
+import ReactModal from 'react-modal';
 
 import { light } from './styles/themes';
 
@@ -13,6 +14,8 @@ import Routes from './routes';
 
 import history from './services/history';
 import { store, persistor } from './store';
+
+ReactModal.setAppElement('#root');
 
 const App: React.FC = () => {
   return (

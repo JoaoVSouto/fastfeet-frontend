@@ -68,6 +68,42 @@ export default createGlobalStyle`
     background-color: ${({ theme }) => theme.success};
   }
 
+  .ReactModal {
+    &__Body--open {
+      overflow: hidden;
+    }
+
+    &__Overlay {
+      opacity: 0;
+      background-color: rgba(0, 0, 0, 0.7) !important;
+      z-index: 3;
+      transition: opacity 300ms ease-in-out;
+
+      &--after-open {
+        opacity: 1;
+      }
+
+      &--before-close {
+        opacity: 0;
+      }
+    }
+
+    &__Content {
+      width: fit-content;
+      height: fit-content;
+      padding: 2.5rem !important;
+      border: 0 !important;
+      box-shadow: 0px 0px 10px #00000033;
+
+      right: 0 !important;
+      bottom: 0 !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+
   ${up('tablet')} {
     :root {
       font-size: 62.5%
