@@ -1,8 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { getNameInitials } from '../../../../utils/getNameInitials';
+import { format } from '../../../../utils/format';
 
 import { useWindowSize } from '../../../../hooks/useWindowSize';
+
+import api from '../../../../services/api';
 
 import Actions from '../../../../components/Actions';
 import Table from '../../../../components/Table';
@@ -18,7 +22,26 @@ import {
   ImagePlaceholder,
   Status,
   ActionsContainer,
+  InfoBox,
 } from './styles';
+
+interface IPackageInfo {
+  canceled_at?: string;
+  start_date?: string;
+  end_date?: string;
+  recipient: {
+    name: string;
+    address_street: string;
+    address_number: number;
+    address_complement?: string;
+    address_cep: string;
+    uf: string;
+    city: string;
+  };
+  signature?: {
+    url: string;
+  };
+}
 
 interface IProps {
   packages: IPackage[];
@@ -26,6 +49,9 @@ interface IProps {
 }
 
 const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [packageInfo, setPackageInfo] = useState<IPackageInfo | null>(null);
+
   const { width } = useWindowSize();
 
   const isDesktop = useMemo(() => {
@@ -39,6 +65,36 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
 
     return false;
   }, [width]);
+
+  async function viewPackageInfo(packageId: number): Promise<void> {
+    try {
+      const { data } = await api.get<IPackageInfo>(`packages/${packageId}`);
+
+      const packageInfoTreated = {
+        ...data,
+        canceled_at: data.canceled_at
+          ? format.date(data.canceled_at)
+          : undefined,
+        start_date: data.start_date ? format.date(data.start_date) : undefined,
+        end_date: data.end_date ? format.date(data.end_date) : undefined,
+        recipient: {
+          ...data.recipient,
+          address_cep: format.cep(data.recipient.address_cep),
+        },
+      };
+
+      setPackageInfo(packageInfoTreated);
+      setIsModalOpen(true);
+    } catch {
+      toast.error(
+        'Ops... Algum erro aconteceu ao requisitar informações da encomenda.'
+      );
+    }
+  }
+
+  function closeModal(): void {
+    setIsModalOpen(false);
+  }
 
   return (
     <>
@@ -91,7 +147,10 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
                 </td>
                 <td>
                   <Actions>
-                    <ActionsButtons />
+                    <ActionsButtons
+                      pkg={pkg}
+                      viewPackageInfo={viewPackageInfo}
+                    />
                   </Actions>
                 </td>
               </tr>
@@ -104,7 +163,7 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
             <Card key={pkg.id}>
               <ActionsContainer>
                 <Actions isMobile>
-                  <ActionsButtons />
+                  <ActionsButtons pkg={pkg} viewPackageInfo={viewPackageInfo} />
                 </Actions>
               </ActionsContainer>
 
@@ -158,8 +217,60 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
         </CardsContainer>
       )}
 
-      <Modal>
-        <h1>hello world</h1>
+      <Modal open={isModalOpen} onRequestClose={closeModal}>
+        {packageInfo && (
+          <>
+            <InfoBox>
+              <h5>Informações da encomenda</h5>
+              <p>
+                {packageInfo.recipient.address_street},{' '}
+                {packageInfo.recipient.address_number}
+                {packageInfo.recipient.address_complement &&
+                  `, ${packageInfo.recipient.address_complement}`}
+              </p>
+              <p>
+                {packageInfo.recipient.city} - {packageInfo.recipient.uf}
+              </p>
+              <p>{packageInfo.recipient.address_cep}</p>
+            </InfoBox>
+            <InfoBox>
+              <h5>Datas</h5>
+              {packageInfo.canceled_at ? (
+                <p>
+                  <strong>Cancelamento:</strong> 25/01/2020
+                </p>
+              ) : (
+                <>
+                  <p>
+                    <strong>Retirada:</strong>{' '}
+                    {packageInfo.start_date ? (
+                      packageInfo.start_date
+                    ) : (
+                      <span className="pending">Pendente</span>
+                    )}
+                  </p>
+                  <p>
+                    <strong>Entrega:</strong>{' '}
+                    {packageInfo.end_date ? (
+                      packageInfo.end_date
+                    ) : (
+                      <span className="pending">Pendente</span>
+                    )}
+                  </p>
+                </>
+              )}
+            </InfoBox>
+            {packageInfo.signature && (
+              <InfoBox>
+                <h5>Assinatura do destinatário</h5>
+                <img
+                  src={packageInfo.signature.url}
+                  alt={`Assinatura do destinatário ${packageInfo.recipient.name}`}
+                />
+              </InfoBox>
+            )}
+          </>
+        )}
       </Modal>
     </>
   );

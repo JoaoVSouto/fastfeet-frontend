@@ -90,7 +90,9 @@ export default createGlobalStyle`
 
     &__Content {
       width: fit-content;
+      max-width: 90%;
       height: fit-content;
+      max-height: 90%;
       padding: 2.5rem !important;
       border: 0 !important;
       box-shadow: 0px 0px 10px #00000033;

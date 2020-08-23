@@ -123,3 +123,31 @@ export const ActionsContainer = styled.div`
     width: 100%;
   }
 `;
+
+export const InfoBox = styled.div`
+  h5 {
+    font-size: 1.4rem;
+    margin-bottom: 0.4rem;
+  }
+
+  img {
+    max-width: 100%;
+    margin-top: 0.8rem;
+  }
+
+  p {
+    line-height: 26px;
+    font-size: 1.6rem;
+
+    span.pending {
+      font-style: italic;
+      color: ${({ theme }) => theme.textSecondaryColor};
+    }
+  }
+
+  + div {
+    border-top: 1px solid ${({ theme }) => theme.borderColor};
+    padding-top: 1rem;
+    margin-top: 1rem;
+  }
+`;

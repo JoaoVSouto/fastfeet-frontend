@@ -1,10 +1,21 @@
 import React from 'react';
 import { MdRemoveRedEye, MdEdit, MdDeleteForever } from 'react-icons/md';
 
-const ActionsButtons: React.FC = () => {
+import { IPackage } from '../..';
+
+interface IProps {
+  pkg: IPackage;
+  viewPackageInfo: (packageId: number) => Promise<void>;
+}
+
+const ActionsButtons: React.FC<IProps> = ({ pkg, viewPackageInfo }) => {
   return (
     <>
-      <button type="button" className="view">
+      <button
+        type="button"
+        className="view"
+        onClick={() => viewPackageInfo(pkg.id)}
+      >
         <MdRemoveRedEye />
         Visualizar
       </button>
