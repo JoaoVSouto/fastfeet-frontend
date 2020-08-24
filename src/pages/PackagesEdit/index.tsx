@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 // import { useParams } from 'react-router-dom';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -16,6 +19,16 @@ import {
   Input,
 } from './styles';
 
+interface IRecipient {
+  id: number;
+  name: string;
+}
+
+interface ISelect {
+  value: string;
+  label: string;
+}
+
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },
@@ -27,6 +40,19 @@ const PackagesEdit: React.FC = () => {
     typeof options[0] | null
   >(null);
   // const { id } = useParams();
+
+  async function searchRecipients(searchValue = ''): Promise<ISelect[]> {
+    const { data } = await api.get<IRecipient[]>('recipients', {
+      params: { q: searchValue },
+    });
+
+    const recipientsTreated = data.map(recipient => ({
+      value: String(recipient.id),
+      label: recipient.name,
+    }));
+
+    return recipientsTreated;
+  }
 
   return (
     <Container>
@@ -49,14 +75,14 @@ const PackagesEdit: React.FC = () => {
         <Fieldset>
           <FormGroup>
             <Label>Destinatário</Label>
-            <Select
-              value={selectedOption}
+            <AsyncSelect
+              loadOptions={searchRecipients}
+              cacheOptions
+              defaultOptions
               placeholder="Ludwig van Beethoven"
-              onChange={option =>
-                setSelectedOption(option as typeof options[0])
-              }
-              options={options}
               classNamePrefix="ReactSelect"
+              loadingMessage={() => 'Carregando...'}
+              noOptionsMessage={() => 'Nenhum destinatário encontrado.'}
             />
           </FormGroup>
 
