@@ -98,7 +98,12 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
 
   function resetModalState(): void {
     setIsModalOpen(false);
-    setPackageInfo(null);
+
+    const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
+
+    setTimeout(() => {
+      setPackageInfo(null);
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
   }
 
   return (
