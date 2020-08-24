@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import { up } from 'styled-breakpoints';
+import { rgba } from 'polished';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 
@@ -105,6 +106,61 @@ export default createGlobalStyle`
     }
   }
 
+  .ReactSelect {
+    &__control {
+      border-color: ${({ theme }) => theme.borderColor} !important;
+      height: 4.5rem;
+
+      &--is-focused {
+        border-color: ${({ theme }) => theme.primary} !important;
+        box-shadow: none !important;
+
+        .ReactSelect__dropdown-indicator {
+          color: ${({ theme }) => theme.primary} !important;
+        }
+      }
+    }
+
+    &__indicator-separator {
+      display: none;
+    }
+
+    &__dropdown-indicator {
+      color: ${({ theme }) => theme.iconColor} !important;
+      padding-right: 0.9rem !important;
+    }
+
+    &__single-value {
+      color: ${({ theme }) => theme.textColor} !important;
+    }
+
+    &__placeholder {
+      color: ${({ theme }) => theme.textSecondaryColor} !important;
+    }
+
+    &__value-container {
+      padding: 0 1.3rem !important;
+    }
+
+    &__option {
+      &--is-focused {
+        background-color: ${({ theme }) => rgba(theme.primary, 0.2)} !important;
+      }
+
+      &:active {
+        background-color: ${({ theme }) => rgba(theme.primary, 0.3)} !important;
+      }
+
+      &--is-selected {
+        background-color: ${({ theme }) => rgba(theme.primary, 0.8)} !important;
+
+        &:active {
+          background-color: ${({ theme }) =>
+            rgba(theme.primary, 0.8)} !important;
+        }
+      }
+    }
+  }
 
   ${up('tablet')} {
     :root {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { MdRemoveRedEye, MdEdit, MdDeleteForever } from 'react-icons/md';
 
 import { IPackage } from '../..';
@@ -24,10 +25,10 @@ const ActionsButtons: React.FC<IProps> = ({
         <MdRemoveRedEye />
         Visualizar
       </button>
-      <a href="#!" className="edit">
+      <Link to={`packages/edit/${pkg.id}`} className="edit">
         <MdEdit />
         Editar
-      </a>
+      </Link>
       <button
         type="button"
         className="delete"
