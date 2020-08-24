@@ -6,9 +6,14 @@ import { IPackage } from '../..';
 interface IProps {
   pkg: IPackage;
   viewPackageInfo: (packageId: number) => Promise<void>;
+  askForPackageDeletion: (packageId: number) => void;
 }
 
-const ActionsButtons: React.FC<IProps> = ({ pkg, viewPackageInfo }) => {
+const ActionsButtons: React.FC<IProps> = ({
+  pkg,
+  viewPackageInfo,
+  askForPackageDeletion,
+}) => {
   return (
     <>
       <button
@@ -23,7 +28,11 @@ const ActionsButtons: React.FC<IProps> = ({ pkg, viewPackageInfo }) => {
         <MdEdit />
         Editar
       </a>
-      <button type="button" className="delete">
+      <button
+        type="button"
+        className="delete"
+        onClick={() => askForPackageDeletion(pkg.id)}
+      >
         <MdDeleteForever />
         Excluir
       </button>

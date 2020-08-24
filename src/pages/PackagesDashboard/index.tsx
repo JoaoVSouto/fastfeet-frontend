@@ -75,6 +75,10 @@ const PackagesDashboard: React.FC = () => {
     retrievePackagesDebounced(value);
   }
 
+  function removePackage(packageId: number): void {
+    setPackages(packages.filter(pkg => pkg.id !== packageId));
+  }
+
   return (
     <Container>
       <Title>Gerenciando encomendas</Title>
@@ -103,7 +107,11 @@ const PackagesDashboard: React.FC = () => {
           </span>
         </NotFound>
       ) : (
-        <DataDisplay packages={packages} packagesSearch={packagesSearch} />
+        <DataDisplay
+          packages={packages}
+          packagesSearch={packagesSearch}
+          removePackage={removePackage}
+        />
       )}
     </Container>
   );

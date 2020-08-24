@@ -25,6 +25,9 @@ import {
   ActionsContainer,
   InfoBox,
   ModalLoadingContainer,
+  ModalDeletionContainer,
+  AcceptButton,
+  CancelButton,
 } from './styles';
 
 interface IPackageInfo {
@@ -48,11 +51,22 @@ interface IPackageInfo {
 interface IProps {
   packages: IPackage[];
   packagesSearch: string;
+  removePackage: (packageId: number) => void;
 }
 
-const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
+
+const DataDisplay: React.FC<IProps> = ({
+  packages,
+  packagesSearch,
+  removePackage,
+}) => {
+  const [isPackageInfoModalOpen, setIsPackageInfoModalOpen] = useState(false);
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = useState(false);
   const [packageInfo, setPackageInfo] = useState<IPackageInfo | null>(null);
+  const [packageToBeDeleted, setPackageToBeDeleted] = useState<number | null>(
+    null
+  );
 
   const { width } = useWindowSize();
 
@@ -69,7 +83,7 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
   }, [width]);
 
   async function viewPackageInfo(packageId: number): Promise<void> {
-    setIsModalOpen(true);
+    setIsPackageInfoModalOpen(true);
 
     try {
       const { data } = await api.get<IPackageInfo>(`packages/${packageId}`);
@@ -92,18 +106,45 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
       toast.error(
         'Ops... Algum erro aconteceu ao requisitar informações da encomenda.'
       );
-      setIsModalOpen(false);
+      setIsPackageInfoModalOpen(false);
     }
   }
 
-  function resetModalState(): void {
-    setIsModalOpen(false);
+  function askForPackageDeletion(packageId: number): void {
+    setPackageToBeDeleted(packageId);
+    setIsDeletionModalOpen(true);
+  }
 
-    const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
+  function resetPackageInfoModalState(): void {
+    setIsPackageInfoModalOpen(false);
 
     setTimeout(() => {
       setPackageInfo(null);
     }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  function resetDeletionModalState(): void {
+    setIsDeletionModalOpen(false);
+
+    setTimeout(() => {
+      setPackageToBeDeleted(null);
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  async function deletePackage(): Promise<void> {
+    if (!packageToBeDeleted) return;
+
+    try {
+      await api.delete(`packages/${packageToBeDeleted}`);
+
+      removePackage(packageToBeDeleted);
+
+      toast.success('Encomenda excluída com sucesso!');
+    } catch {
+      toast.error('Ops... Algum erro aconteceu ao deletar a encomenda.');
+    } finally {
+      resetDeletionModalState();
+    }
   }
 
   return (
@@ -160,6 +201,7 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
                     <ActionsButtons
                       pkg={pkg}
                       viewPackageInfo={viewPackageInfo}
+                      askForPackageDeletion={askForPackageDeletion}
                     />
                   </Actions>
                 </td>
@@ -173,7 +215,11 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
             <Card key={pkg.id}>
               <ActionsContainer>
                 <Actions isMobile>
-                  <ActionsButtons pkg={pkg} viewPackageInfo={viewPackageInfo} />
+                  <ActionsButtons
+                    pkg={pkg}
+                    viewPackageInfo={viewPackageInfo}
+                    askForPackageDeletion={askForPackageDeletion}
+                  />
                 </Actions>
               </ActionsContainer>
 
@@ -227,7 +273,10 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
         </CardsContainer>
       )}
 
-      <Modal open={isModalOpen} onRequestClose={resetModalState}>
+      <Modal
+        open={isPackageInfoModalOpen}
+        onRequestClose={resetPackageInfoModalState}
+      >
         {packageInfo ? (
           <>
             <InfoBox>
@@ -286,6 +335,26 @@ const DataDisplay: React.FC<IProps> = ({ packages, packagesSearch }) => {
             <strong>Carregando...</strong>
           </ModalLoadingContainer>
         )}
+      </Modal>
+
+      <Modal
+        open={isDeletionModalOpen}
+        onRequestClose={resetDeletionModalState}
+      >
+        <ModalDeletionContainer>
+          <p>
+            Tem certeza que deseja excluir a encomenda de ID{' '}
+            <strong>{`#${String(packageToBeDeleted).padStart(2, '0')}`}</strong>
+            ?
+          </p>
+
+          <div>
+            <CancelButton onClick={resetDeletionModalState}>
+              Cancelar
+            </CancelButton>
+            <AcceptButton onClick={deletePackage}>Excluir</AcceptButton>
+          </div>
+        </ModalDeletionContainer>
       </Modal>
     </>
   );
