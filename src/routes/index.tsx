@@ -7,6 +7,7 @@ import SignIn from '../pages/SignIn';
 
 import PackagesDashboard from '../pages/PackagesDashboard';
 import PackagesEdit from '../pages/PackagesEdit';
+import PackagesCreation from '../pages/PackagesCreation';
 
 const Routes: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const Routes: React.FC = () => {
 
       <Route path="/packages" exact component={PackagesDashboard} isPrivate />
       <Route path="/packages/edit/:id" component={PackagesEdit} isPrivate />
+      <Route path="/packages/create" component={PackagesCreation} isPrivate />
 
       <Redirect to="/" />
     </Switch>

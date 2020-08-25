@@ -93,7 +93,7 @@ const PackagesDashboard: React.FC = () => {
             onChange={handlePackagesSearchChange}
           />
         </SearchContainer>
-        <RegisterLink as={Link} to="/packages/register">
+        <RegisterLink as={Link} to="/packages/create">
           <MdAdd />
           Cadastrar
         </RegisterLink>
