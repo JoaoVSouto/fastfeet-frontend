@@ -1,23 +1,46 @@
 import styled from 'styled-components';
+import { down } from 'styled-breakpoints';
 
 import { Button } from '../../components/Button';
 import StyledInput from '../../components/Input';
 
-export const Container = styled.div`
-  max-width: 90rem;
+export const Container = styled.main`
+  max-width: 114rem;
   margin: 0 auto;
-  padding-top: 3.4rem;
+  padding: 3.4rem 12rem;
+
+  ${down('phone')} {
+    padding: 2.4rem 3rem;
+  }
 `;
 
 export const Row = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+
+  ${down('smPhone')} {
+    flex-direction: column;
+  }
 `;
 
 export const Title = styled.h1`
   font-size: 2.4rem;
   color: ${({ theme }) => theme.titleColor};
+`;
+
+export const Actions = styled.div`
+  ${down('smPhone')} {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    width: 100%;
+
+    button {
+      margin: 0;
+      width: 48%;
+    }
+  }
 `;
 
 const BaseButton = styled(Button)`
@@ -79,6 +102,12 @@ export const Fieldset = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
   margin-bottom: 1.6rem;
+
+  ${down('smPhone')} {
+    gap: 1.6rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
 `;
 
 export const Label = styled.label`

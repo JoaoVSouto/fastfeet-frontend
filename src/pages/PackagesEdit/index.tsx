@@ -10,6 +10,7 @@ import {
   Container,
   Row,
   Title,
+  Actions,
   BackButton,
   SaveButton,
   Form,
@@ -106,7 +107,7 @@ const PackagesEdit: React.FC = () => {
       <Row>
         <Title>Edição de encomendas</Title>
 
-        <div>
+        <Actions>
           <BackButton onClick={handleGoBack}>
             <MdNavigateBefore />
             Voltar
@@ -115,7 +116,7 @@ const PackagesEdit: React.FC = () => {
             <MdDone />
             Salvar
           </SaveButton>
-        </div>
+        </Actions>
       </Row>
 
       <Form>
