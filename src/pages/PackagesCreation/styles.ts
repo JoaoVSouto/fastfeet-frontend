@@ -121,3 +121,12 @@ export const Input = styled(StyledInput)`
   height: 4.5rem;
   padding: 0 1.5rem;
 `;
+
+export const Error = styled.span`
+  display: block;
+  color: ${({ theme }) => theme.danger};
+  font-size: 1.4rem;
+  margin-top: 0.8rem;
+  font-weight: bold;
+  text-align: right;
+`;

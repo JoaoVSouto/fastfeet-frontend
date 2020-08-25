@@ -1,9 +1,10 @@
 import React from 'react';
-import { ValueType, ActionMeta } from 'react-select';
+import { ValueType } from 'react-select';
 import Select from 'react-select/async';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -20,6 +21,7 @@ import {
   Fieldset,
   Label,
   Input,
+  Error,
 } from './styles';
 
 interface IPerson {
@@ -34,9 +36,17 @@ interface ISelect {
 
 interface IPayload {
   product: string;
-  recipient_id: number;
-  courier_id: number;
+  recipient_id: number | null;
+  courier_id: number | null;
 }
+
+const PackagesCreationSchema = Yup.object().shape({
+  recipient_id: Yup.string()
+    .nullable()
+    .required('Destinatário não selecionado'),
+  courier_id: Yup.string().nullable().required('Entregador não selecionado'),
+  product: Yup.string().required('Nome do produto não preenchido'),
+});
 
 const PackagesCreation: React.FC = () => {
   const history = useHistory();
@@ -55,9 +65,10 @@ const PackagesCreation: React.FC = () => {
   const formik = useFormik<IPayload>({
     initialValues: {
       product: '',
-      courier_id: NaN,
-      recipient_id: NaN,
+      courier_id: null,
+      recipient_id: null,
     },
+    validationSchema: PackagesCreationSchema,
     onSubmit: handleCreation,
   });
 
@@ -119,6 +130,9 @@ const PackagesCreation: React.FC = () => {
               noOptionsMessage={() => 'Nenhum destinatário encontrado.'}
               onChange={setFieldValue('recipient_id')}
             />
+            {formik.touched.recipient_id && formik.errors.recipient_id && (
+              <Error>{formik.errors.recipient_id}</Error>
+            )}
           </FormGroup>
 
           <FormGroup>
@@ -133,6 +147,9 @@ const PackagesCreation: React.FC = () => {
               noOptionsMessage={() => 'Nenhum entregador encontrado.'}
               onChange={setFieldValue('courier_id')}
             />
+            {formik.touched.courier_id && formik.errors.courier_id && (
+              <Error>{formik.errors.courier_id}</Error>
+            )}
           </FormGroup>
         </Fieldset>
 
@@ -145,6 +162,9 @@ const PackagesCreation: React.FC = () => {
             value={formik.values.product}
             onChange={formik.handleChange}
           />
+          {formik.touched.product && formik.errors.product && (
+            <Error>{formik.errors.product}</Error>
+          )}
         </FormGroup>
       </Form>
     </Container>
