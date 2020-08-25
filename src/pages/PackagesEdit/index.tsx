@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Select from 'react-select';
-import AsyncSelect from 'react-select/async';
-// import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import Select from 'react-select/async';
+import { useParams, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -19,7 +19,7 @@ import {
   Input,
 } from './styles';
 
-interface IRecipient {
+interface IPerson {
   id: number;
   name: string;
 }
@@ -29,29 +29,76 @@ interface ISelect {
   label: string;
 }
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-];
+interface IPackage {
+  id: number;
+  product: string;
+  recipient: {
+    name: string;
+  };
+  courier: {
+    name: string;
+  };
+}
 
 const PackagesEdit: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<
-    typeof options[0] | null
-  >(null);
-  // const { id } = useParams();
+  const [packageInfo, setPackageInfo] = useState<IPackage>({} as IPackage);
+  const [productName, setProductName] = useState('');
+  const [selectedRecipient, setSelectedRecipient] = useState<ISelect>(
+    {} as ISelect
+  );
+  const [selectedCourier, setSelectedCourier] = useState<ISelect>(
+    {} as ISelect
+  );
 
-  async function searchRecipients(searchValue = ''): Promise<ISelect[]> {
-    const { data } = await api.get<IRecipient[]>('recipients', {
-      params: { q: searchValue },
-    });
+  const { id } = useParams();
+  const history = useHistory();
 
-    const recipientsTreated = data.map(recipient => ({
-      value: String(recipient.id),
-      label: recipient.name,
-    }));
+  useEffect(() => {
+    (async () => {
+      const response = await api.get(`packages/${id}`);
+      setPackageInfo(response.data);
+    })();
+  }, [id]);
 
-    return recipientsTreated;
+  async function handleUpdate(): Promise<void> {
+    try {
+      const payload = {
+        id,
+        courier_id: Number(selectedCourier.value),
+        recipient_id: Number(selectedRecipient.value),
+        product: productName,
+      };
+
+      const payloadWithoutFalsyFields = Object.fromEntries(
+        Object.entries(payload).filter(entry => Boolean(entry[1]))
+      );
+
+      await api.put('packages', payloadWithoutFalsyFields);
+
+      history.push('/packages');
+      toast.success('Encomenda atualizada com sucesso!');
+    } catch {
+      toast.error('Erro ao atualizar encomenda.');
+    }
+  }
+
+  function handleGoBack(): void {
+    history.push('/packages');
+  }
+
+  function search(entity: string) {
+    return async function executeSearch(searchValue = '') {
+      const { data } = await api.get<IPerson[]>(entity, {
+        params: { q: searchValue },
+      });
+
+      const dataTreated = data.map(person => ({
+        value: String(person.id),
+        label: person.name,
+      }));
+
+      return dataTreated;
+    };
   }
 
   return (
@@ -60,11 +107,11 @@ const PackagesEdit: React.FC = () => {
         <Title>Edição de encomendas</Title>
 
         <div>
-          <BackButton>
+          <BackButton onClick={handleGoBack}>
             <MdNavigateBefore />
             Voltar
           </BackButton>
-          <SaveButton>
+          <SaveButton onClick={handleUpdate}>
             <MdDone />
             Salvar
           </SaveButton>
@@ -75,33 +122,42 @@ const PackagesEdit: React.FC = () => {
         <Fieldset>
           <FormGroup>
             <Label>Destinatário</Label>
-            <AsyncSelect
-              loadOptions={searchRecipients}
+            <Select
+              loadOptions={search('recipients')}
               cacheOptions
               defaultOptions
-              placeholder="Ludwig van Beethoven"
+              placeholder={packageInfo.recipient?.name || ''}
               classNamePrefix="ReactSelect"
               loadingMessage={() => 'Carregando...'}
               noOptionsMessage={() => 'Nenhum destinatário encontrado.'}
+              onChange={option => setSelectedRecipient(option as ISelect)}
             />
           </FormGroup>
 
           <FormGroup>
             <Label>Entregador</Label>
             <Select
-              value={selectedOption}
-              placeholder="John Doe"
-              onChange={option =>
-                setSelectedOption(option as typeof options[0])}
-              options={options}
+              loadOptions={search('couriers')}
+              cacheOptions
+              defaultOptions
+              placeholder={packageInfo.courier?.name || ''}
               classNamePrefix="ReactSelect"
+              loadingMessage={() => 'Carregando...'}
+              noOptionsMessage={() => 'Nenhum entregador encontrado.'}
+              onChange={option => setSelectedCourier(option as ISelect)}
             />
           </FormGroup>
         </Fieldset>
 
         <FormGroup>
           <Label htmlFor="product-name">Nome do produto</Label>
-          <Input type="text" id="product-name" placeholder="Yamaha SX7" />
+          <Input
+            type="text"
+            id="product-name"
+            value={productName}
+            onChange={e => setProductName(e.target.value)}
+            placeholder={packageInfo.product || ''}
+          />
         </FormGroup>
       </Form>
     </Container>
