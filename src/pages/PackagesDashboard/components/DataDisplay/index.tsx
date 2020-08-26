@@ -14,6 +14,9 @@ import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
 import Modal, {
   MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalDeletionContainer,
+  AcceptButton,
+  CancelButton,
 } from '../../../../components/Modal';
 import TeaLoading from '../../../../components/TeaLoading';
 import {
@@ -24,14 +27,7 @@ import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
 
-import {
-  Status,
-  InfoBox,
-  ModalLoadingContainer,
-  ModalDeletionContainer,
-  AcceptButton,
-  CancelButton,
-} from './styles';
+import { Status, InfoBox, ModalLoadingContainer } from './styles';
 
 interface IPackageInfo {
   canceled_at?: string;
