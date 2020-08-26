@@ -56,10 +56,17 @@ const PackagesEdit: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const response = await api.get(`packages/${id}`);
-      setPackageInfo(response.data);
+      try {
+        const response = await api.get(`packages/${id}`);
+        setPackageInfo(response.data);
+      } catch (err) {
+        if (err.response?.status === 404) {
+          history.push('/packages');
+          toast.error('Encomenda não encontrada.');
+        }
+      }
     })();
-  }, [id]);
+  }, [id, history]);
 
   async function handleUpdate(): Promise<void> {
     try {
