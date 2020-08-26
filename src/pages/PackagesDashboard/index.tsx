@@ -7,8 +7,6 @@ import { randomTheme } from '../../utils/getRandomTheme';
 
 import api from '../../services/api';
 
-import DataDisplay from './components/DataDisplay';
-
 import {
   Container,
   Title,
@@ -17,7 +15,8 @@ import {
   SearchInput,
   RegisterLink,
   NotFound,
-} from './styles';
+} from '../../components/Dashboard';
+import DataDisplay from './components/DataDisplay';
 
 export interface IPackage {
   id: number;

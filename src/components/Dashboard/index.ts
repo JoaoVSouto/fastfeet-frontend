@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { down } from 'styled-breakpoints';
 
-import { ButtonLink } from '../../components/Button';
-import Input from '../../components/Input';
+import Input from '../Input';
+import { ButtonLink } from '../Button';
 
-export const Container = styled.main`
+export const Container = styled.div`
   padding: 3.4rem 12rem;
 
   ${down('phone')} {
@@ -92,4 +92,38 @@ export const NotFound = styled.h4`
   margin-top: 2.4rem;
   text-align: center;
   font-weight: normal;
+`;
+
+export const ImageContainer = styled.span`
+  display: inline-flex;
+  width: 35px;
+  height: 35px;
+  margin-right: 1rem;
+
+  img {
+    width: 100%;
+    border-radius: 50%;
+  }
+
+  span {
+    width: inherit;
+    height: inherit;
+  }
+`;
+
+interface IImagePlaceholder {
+  colorTheme: string;
+}
+
+export const ImagePlaceholder = styled.span<IImagePlaceholder>`
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center !important;
+  align-items: center;
+
+  border-radius: 50%;
+
+  ${({ colorTheme }) => colorTheme}
 `;

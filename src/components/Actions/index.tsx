@@ -5,6 +5,8 @@ import { useIntersection } from '../../hooks/useIntersection';
 
 import { Button, Dropdown } from './styles';
 
+export { ActionsContainer } from './styles';
+
 interface IProps {
   isMobile?: boolean;
 }

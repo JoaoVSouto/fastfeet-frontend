@@ -4,40 +4,6 @@ import { Button } from '../../../../components/Button';
 
 import { IPackage } from '../..';
 
-export const ImageContainer = styled.span`
-  display: inline-flex;
-  width: 35px;
-  height: 35px;
-  margin-right: 1rem;
-
-  img {
-    width: 100%;
-    border-radius: 50%;
-  }
-
-  span {
-    width: inherit;
-    height: inherit;
-  }
-`;
-
-interface IImagePlaceholder {
-  colorTheme: string;
-}
-
-export const ImagePlaceholder = styled.span<IImagePlaceholder>`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  justify-content: center !important;
-  align-items: center;
-
-  border-radius: 50%;
-
-  ${({ colorTheme }) => colorTheme}
-`;
-
 interface IStatus {
   status: IPackage['status'];
 }
@@ -105,25 +71,6 @@ export const Status = styled.span<IStatus>`
         background-color: ${({ theme }) => theme.danger};
       }
     `}
-`;
-
-export const ActionsContainer = styled.div`
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  background-color: ${({ theme }) => theme.secondary};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 50%;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.09);
-
-  button {
-    margin: 0;
-    height: 100%;
-    width: 100%;
-  }
 `;
 
 export const InfoBox = styled.div`

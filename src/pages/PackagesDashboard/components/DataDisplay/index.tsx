@@ -8,21 +8,22 @@ import { useWindowSize } from '../../../../hooks/useWindowSize';
 
 import api from '../../../../services/api';
 
-import Actions from '../../../../components/Actions';
+import Actions, { ActionsContainer } from '../../../../components/Actions';
 import Table from '../../../../components/Table';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
 import Modal from '../../../../components/Modal';
 import TeaLoading from '../../../../components/TeaLoading';
+import {
+  ImageContainer,
+  ImagePlaceholder,
+} from '../../../../components/Dashboard';
 import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
 
 import {
-  ImageContainer,
-  ImagePlaceholder,
   Status,
-  ActionsContainer,
   InfoBox,
   ModalLoadingContainer,
   ModalDeletionContainer,
