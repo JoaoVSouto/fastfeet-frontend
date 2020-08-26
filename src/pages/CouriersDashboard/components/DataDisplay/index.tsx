@@ -111,7 +111,7 @@ const DataDisplay: React.FC<IProps> = ({ couriers }) => {
 
               <div className="card-row">
                 <strong>Email</strong>
-                {courier.email}
+                <span className="email">{courier.email}</span>
               </div>
             </Card>
           ))}

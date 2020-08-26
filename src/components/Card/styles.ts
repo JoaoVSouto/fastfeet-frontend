@@ -25,6 +25,12 @@ export const Card = styled.article`
     strong {
       margin-right: 1rem;
     }
+
+    span.email {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 `;
 
