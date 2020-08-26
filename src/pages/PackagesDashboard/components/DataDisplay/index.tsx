@@ -12,7 +12,9 @@ import Actions, { ActionsContainer } from '../../../../components/Actions';
 import Table from '../../../../components/Table';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
-import Modal from '../../../../components/Modal';
+import Modal, {
+  MODAL_FADE_TRANSITION_TIME_IN_MS,
+} from '../../../../components/Modal';
 import TeaLoading from '../../../../components/TeaLoading';
 import {
   ImageContainer,
@@ -54,8 +56,6 @@ interface IProps {
   packagesSearch: string;
   removePackage: (packageId: number) => void;
 }
-
-const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
 
 const DataDisplay: React.FC<IProps> = ({
   packages,

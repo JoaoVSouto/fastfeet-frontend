@@ -8,6 +8,8 @@ interface IProps {
 
 type Props = React.PropsWithChildren<IProps>;
 
+export const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
+
 const Modal: React.FC<Props> = ({ children, open = false, onRequestClose }) => {
   const [isOpen, setIsOpen] = useState(open);
 
@@ -27,7 +29,7 @@ const Modal: React.FC<Props> = ({ children, open = false, onRequestClose }) => {
     <ReactModal
       isOpen={isOpen}
       onRequestClose={closeModal}
-      closeTimeoutMS={300}
+      closeTimeoutMS={MODAL_FADE_TRANSITION_TIME_IN_MS}
       shouldCloseOnOverlayClick
       shouldCloseOnEsc
     >
