@@ -236,9 +236,11 @@ const DataDisplay: React.FC<IProps> = ({
 
               <div className="card-row">
                 <strong>Produto</strong>
-                <Highlight toHighlight={packagesSearch}>
-                  {pkg.product}
-                </Highlight>
+                <span>
+                  <Highlight toHighlight={packagesSearch}>
+                    {pkg.product}
+                  </Highlight>
+                </span>
               </div>
 
               <div className="card-row">

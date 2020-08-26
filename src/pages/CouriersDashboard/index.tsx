@@ -91,7 +91,7 @@ const CouriersDashboard: React.FC = () => {
           </span>
         </NotFound>
       ) : (
-        <DataDisplay couriers={couriers} />
+        <DataDisplay couriers={couriers} couriersSearch={couriersSearch} />
       )}
     </Container>
   );

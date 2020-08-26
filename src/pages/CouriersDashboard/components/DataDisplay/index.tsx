@@ -12,14 +12,16 @@ import {
 import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import Card, { CardsContainer } from '../../../../components/Card';
+import Highlight from '../../../../components/Highlight';
 
 import { ICourier } from '../..';
 
 interface IProps {
   couriers: ICourier[];
+  couriersSearch: string;
 }
 
-const DataDisplay: React.FC<IProps> = ({ couriers }) => {
+const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
   const { width } = useWindowSize();
 
   const isDesktop = useMemo(() => {
@@ -65,7 +67,11 @@ const DataDisplay: React.FC<IProps> = ({ couriers }) => {
                     </ImageContainer>
                   </span>
                 </td>
-                <td>{courier.name}</td>
+                <td>
+                  <Highlight toHighlight={couriersSearch}>
+                    {courier.name}
+                  </Highlight>
+                </td>
                 <td>{courier.email}</td>
                 <td>
                   <Actions>
@@ -106,7 +112,11 @@ const DataDisplay: React.FC<IProps> = ({ couriers }) => {
 
               <div className="card-row">
                 <strong>Nome</strong>
-                {courier.name}
+                <span>
+                  <Highlight toHighlight={couriersSearch}>
+                    {courier.name}
+                  </Highlight>
+                </span>
               </div>
 
               <div className="card-row">
