@@ -3,13 +3,19 @@ import { MdInsertPhoto } from 'react-icons/md';
 
 import { Container } from './styles';
 
-const AvatarInput: React.FC = () => {
+interface IProps {
+  onChange(avatar: File | null): void;
+}
+
+const AvatarInput: React.FC<IProps> = ({ onChange }) => {
   const [image, setImage] = useState<string | null>(null);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const { target } = e;
 
     const file = target.files ? target.files[0] : null;
+
+    onChange(file);
 
     if (!file) {
       setImage(null);
