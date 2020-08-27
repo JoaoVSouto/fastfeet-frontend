@@ -22,7 +22,7 @@ import TeaLoading from '../../../../components/TeaLoading';
 import {
   ImageContainer,
   ImagePlaceholder,
-} from '../../../../components/Dashboard';
+} from '../../../../components/DashboardRelated';
 import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';

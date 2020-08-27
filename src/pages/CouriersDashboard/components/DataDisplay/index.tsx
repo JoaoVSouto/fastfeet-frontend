@@ -11,7 +11,7 @@ import Table from '../../../../components/Table';
 import {
   ImageContainer,
   ImagePlaceholder,
-} from '../../../../components/Dashboard';
+} from '../../../../components/DashboardRelated';
 import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import Card, { CardsContainer } from '../../../../components/Card';

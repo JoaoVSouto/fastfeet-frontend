@@ -15,7 +15,7 @@ import {
   SearchInput,
   RegisterLink,
   NotFound,
-} from '../../components/Dashboard';
+} from '../../components/DashboardRelated';
 import DataDisplay from './components/DataDisplay';
 
 export interface ICourier {
