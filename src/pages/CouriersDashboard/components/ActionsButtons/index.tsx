@@ -6,16 +6,24 @@ import { ICourier } from '../..';
 
 interface IProps {
   courier: ICourier;
+  askForCourierDeletion(courierId: number): void;
 }
 
-const ActionsButtons: React.FC<IProps> = ({ courier }) => {
+const ActionsButtons: React.FC<IProps> = ({
+  courier,
+  askForCourierDeletion,
+}) => {
   return (
     <>
       <Link to={`couriers/edit/${courier.id}`} className="edit">
         <MdEdit />
         Editar
       </Link>
-      <button type="button" className="delete">
+      <button
+        type="button"
+        className="delete"
+        onClick={() => askForCourierDeletion(courier.id)}
+      >
         <MdDeleteForever />
         Excluir
       </button>

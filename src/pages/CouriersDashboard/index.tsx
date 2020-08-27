@@ -63,6 +63,10 @@ const CouriersDashboard: React.FC = () => {
     retrieveCouriersDebounced(value);
   }
 
+  function removeCourier(courierId: number): void {
+    setCouriers(couriers.filter(courier => courier.id !== courierId));
+  }
+
   return (
     <Container>
       <Title>Gerenciando entregadores</Title>
@@ -91,7 +95,11 @@ const CouriersDashboard: React.FC = () => {
           </span>
         </NotFound>
       ) : (
-        <DataDisplay couriers={couriers} couriersSearch={couriersSearch} />
+        <DataDisplay
+          couriers={couriers}
+          couriersSearch={couriersSearch}
+          removeCourier={removeCourier}
+        />
       )}
     </Container>
   );

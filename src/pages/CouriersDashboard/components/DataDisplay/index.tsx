@@ -1,8 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { getNameInitials } from '../../../../utils/getNameInitials';
 
 import { useWindowSize } from '../../../../hooks/useWindowSize';
+
+import api from '../../../../services/api';
 
 import Table from '../../../../components/Table';
 import {
@@ -13,15 +16,31 @@ import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
+import Modal, {
+  MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalDeletionContainer,
+  AcceptButton,
+  CancelButton,
+} from '../../../../components/Modal';
 
 import { ICourier } from '../..';
 
 interface IProps {
   couriers: ICourier[];
   couriersSearch: string;
+  removeCourier(courierId: number): void;
 }
 
-const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
+const DataDisplay: React.FC<IProps> = ({
+  couriers,
+  couriersSearch,
+  removeCourier,
+}) => {
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = useState(false);
+  const [courierToBeDeleted, setCourierToBeDeleted] = useState<number | null>(
+    null
+  );
+
   const { width } = useWindowSize();
 
   const isDesktop = useMemo(() => {
@@ -35,6 +54,35 @@ const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
 
     return false;
   }, [width]);
+
+  function askForCourierDeletion(courierId: number): void {
+    setCourierToBeDeleted(courierId);
+    setIsDeletionModalOpen(true);
+  }
+
+  function resetDeletionModalState(): void {
+    setIsDeletionModalOpen(false);
+
+    setTimeout(() => {
+      setCourierToBeDeleted(null);
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  async function deleteCourier(): Promise<void> {
+    if (!courierToBeDeleted) return;
+
+    try {
+      await api.delete(`couriers/${courierToBeDeleted}`);
+
+      removeCourier(courierToBeDeleted);
+
+      toast.success('Entregador excluído com sucesso!');
+    } catch {
+      toast.error('Ops... Algum erro aconteceu ao excluir entregador.');
+    } finally {
+      resetDeletionModalState();
+    }
+  }
 
   return (
     <>
@@ -75,7 +123,10 @@ const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
                 <td>{courier.email}</td>
                 <td>
                   <Actions>
-                    <ActionsButtons courier={courier} />
+                    <ActionsButtons
+                      courier={courier}
+                      askForCourierDeletion={askForCourierDeletion}
+                    />
                   </Actions>
                 </td>
               </tr>
@@ -88,7 +139,10 @@ const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
             <Card key={courier.id}>
               <ActionsContainer>
                 <Actions isMobile>
-                  <ActionsButtons courier={courier} />
+                  <ActionsButtons
+                    courier={courier}
+                    askForCourierDeletion={askForCourierDeletion}
+                  />
                 </Actions>
               </ActionsContainer>
 
@@ -127,6 +181,26 @@ const DataDisplay: React.FC<IProps> = ({ couriers, couriersSearch }) => {
           ))}
         </CardsContainer>
       )}
+
+      <Modal
+        open={isDeletionModalOpen}
+        onRequestClose={resetDeletionModalState}
+      >
+        <ModalDeletionContainer>
+          <p>
+            Tem certeza que deseja excluir o entregador de ID{' '}
+            <strong>{`#${String(courierToBeDeleted).padStart(2, '0')}`}</strong>
+            ?
+          </p>
+
+          <div>
+            <CancelButton onClick={resetDeletionModalState}>
+              Cancelar
+            </CancelButton>
+            <AcceptButton onClick={deleteCourier}>Excluir</AcceptButton>
+          </div>
+        </ModalDeletionContainer>
+      </Modal>
     </>
   );
 };
