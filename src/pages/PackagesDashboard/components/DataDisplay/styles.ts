@@ -110,3 +110,8 @@ export const ModalLoadingContainer = styled.div`
     margin-top: 1rem;
   }
 `;
+
+export const NotFound = styled.span`
+  font-style: italic;
+  color: ${({ theme }) => theme.textSecondaryColor};
+`;

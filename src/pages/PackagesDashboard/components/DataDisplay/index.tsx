@@ -27,7 +27,7 @@ import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
 
-import { Status, InfoBox, ModalLoadingContainer } from './styles';
+import { Status, InfoBox, ModalLoadingContainer, NotFound } from './styles';
 
 interface IPackageInfo {
   canceled_at?: string;
@@ -173,19 +173,25 @@ const DataDisplay: React.FC<IProps> = ({
                 </td>
                 <td>
                   <span>
-                    <ImageContainer>
-                      {pkg.courier.avatar ? (
-                        <img
-                          src={pkg.courier.avatar.url}
-                          alt={pkg.courier.name}
-                        />
-                      ) : (
-                        <ImagePlaceholder colorTheme={pkg.colorTheme}>
-                          {getNameInitials(pkg.courier.name)}
-                        </ImagePlaceholder>
-                      )}
-                    </ImageContainer>
-                    {pkg.courier.name}
+                    {pkg.courier ? (
+                      <>
+                        <ImageContainer>
+                          {pkg.courier.avatar ? (
+                            <img
+                              src={pkg.courier.avatar.url}
+                              alt={pkg.courier.name}
+                            />
+                          ) : (
+                            <ImagePlaceholder colorTheme={pkg.colorTheme}>
+                              {getNameInitials(pkg.courier.name)}
+                            </ImagePlaceholder>
+                          )}
+                        </ImageContainer>
+                        {pkg.courier.name}
+                      </>
+                    ) : (
+                      <NotFound>Não possui</NotFound>
+                    )}
                   </span>
                 </td>
                 <td>{pkg.recipient.city}</td>
@@ -241,16 +247,25 @@ const DataDisplay: React.FC<IProps> = ({
 
               <div className="card-row">
                 <strong>Entregador</strong>
-                <ImageContainer>
-                  {pkg.courier.avatar ? (
-                    <img src={pkg.courier.avatar.url} alt={pkg.courier.name} />
-                  ) : (
-                    <ImagePlaceholder colorTheme={pkg.colorTheme}>
-                      {getNameInitials(pkg.courier.name)}
-                    </ImagePlaceholder>
-                  )}
-                </ImageContainer>
-                {pkg.courier.name}
+                {pkg.courier ? (
+                  <>
+                    <ImageContainer>
+                      {pkg.courier.avatar ? (
+                        <img
+                          src={pkg.courier.avatar.url}
+                          alt={pkg.courier.name}
+                        />
+                      ) : (
+                        <ImagePlaceholder colorTheme={pkg.colorTheme}>
+                          {getNameInitials(pkg.courier.name)}
+                        </ImagePlaceholder>
+                      )}
+                    </ImageContainer>
+                    {pkg.courier.name}
+                  </>
+                ) : (
+                  <NotFound>Não possui</NotFound>
+                )}
               </div>
 
               <div className="card-row">

@@ -29,7 +29,7 @@ export interface IPackage {
     uf: string;
     city: string;
   };
-  courier: {
+  courier?: {
     name: string;
     avatar?: {
       path: string;
