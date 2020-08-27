@@ -9,6 +9,7 @@ import PackagesDashboard from '../pages/PackagesDashboard';
 import PackagesEdit from '../pages/PackagesEdit';
 import PackagesCreation from '../pages/PackagesCreation';
 import CouriersDashboard from '../pages/CouriersDashboard';
+import CouriersCreation from '../pages/CouriersCreation';
 
 const Routes: React.FC = () => {
   return (
@@ -19,7 +20,8 @@ const Routes: React.FC = () => {
       <Route path="/packages/edit/:id" component={PackagesEdit} isPrivate />
       <Route path="/packages/create" component={PackagesCreation} isPrivate />
 
-      <Route path="/couriers" component={CouriersDashboard} isPrivate />
+      <Route path="/couriers" exact component={CouriersDashboard} isPrivate />
+      <Route path="/couriers/create" component={CouriersCreation} isPrivate />
 
       <Redirect to="/" />
     </Switch>
