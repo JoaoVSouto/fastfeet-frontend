@@ -17,12 +17,12 @@ import {
   BackButton,
   SaveButton,
   Form,
-  FormGroup,
-  Fieldset,
   Label,
   Input,
   Error,
-} from './styles';
+} from '../../components/EditCreationRelated';
+
+import { FormGroup, Fieldset } from './styles';
 
 interface IPerson {
   id: number;
