@@ -1,6 +1,9 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -30,8 +33,25 @@ const CouriersCreation: React.FC = () => {
       email: '',
       avatar: null,
     },
-    onSubmit(payload) {
-      console.log(payload);
+    async onSubmit(payload) {
+      const { avatar, email, name } = payload;
+
+      const formData = new FormData();
+
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+
+      formData.append('email', email);
+      formData.append('name', name);
+
+      try {
+        await api.post('couriers', formData);
+
+        toast.success('Entregador criado com sucesso!');
+      } catch {
+        toast.error('Erro ao criar entregador.');
+      }
     },
   });
 
