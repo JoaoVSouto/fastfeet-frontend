@@ -90,19 +90,26 @@ const CouriersEdit: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await api.get<ICourier>(`couriers/${id}`);
+      try {
+        const { data } = await api.get<ICourier>(`couriers/${id}`);
 
-      setCourierAvatar(data.avatar?.url || '');
-      setCourierDisplay(state => ({
-        ...state,
-        initials: getNameInitials(data.name),
-      }));
-      setPlaceholders({
-        email: data.email,
-        name: data.name,
-      });
+        setCourierAvatar(data.avatar?.url || '');
+        setCourierDisplay(state => ({
+          ...state,
+          initials: getNameInitials(data.name),
+        }));
+        setPlaceholders({
+          email: data.email,
+          name: data.name,
+        });
+      } catch (err) {
+        if (err.response?.status === 404) {
+          history.push('/couriers');
+          toast.error('Entregador não encontrado.');
+        }
+      }
     })();
-  }, [id]);
+  }, [id, history]);
 
   function setAvatar(avatar: File | null): void {
     formik.setFieldValue('avatar', avatar);
