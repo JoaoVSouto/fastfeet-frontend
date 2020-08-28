@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useParams, useHistory } from 'react-router-dom';
 // import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
-// import api from '../../services/api';
+import api from '../../services/api';
 
 import {
   Container,
@@ -23,6 +23,14 @@ import AvatarInput from './components/AvatarInput';
 
 import { FormGroup } from './styles';
 
+interface ICourier {
+  name: string;
+  email: string;
+  avatar?: {
+    url: string;
+  };
+}
+
 interface IPayload {
   name: string;
   email: string;
@@ -35,6 +43,8 @@ const CouriersEditSchema = Yup.object().shape({
 });
 
 const CouriersEdit: React.FC = () => {
+  const [courierAvatar, setCourierAvatar] = useState('');
+
   const { id } = useParams();
   const history = useHistory();
 
@@ -49,6 +59,17 @@ const CouriersEdit: React.FC = () => {
       console.log(payload, id);
     },
   });
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await api.get<ICourier>(`couriers/${id}`);
+
+      setCourierAvatar(data.avatar?.url || '');
+
+      formik.setFieldValue('name', data.name);
+      formik.setFieldValue('email', data.email);
+    })();
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function setAvatar(avatar: File | null): void {
     formik.setFieldValue('avatar', avatar);
@@ -76,7 +97,7 @@ const CouriersEdit: React.FC = () => {
       </Row>
 
       <Form>
-        <AvatarInput onChange={setAvatar} />
+        <AvatarInput onChange={setAvatar} initialImage={courierAvatar} />
 
         <FormGroup>
           <Label htmlFor="name">Nome</Label>

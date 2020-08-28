@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdInsertPhoto } from 'react-icons/md';
 
 import { Container } from './styles';
 
 interface IProps {
   onChange(avatar: File | null): void;
+  initialImage?: string;
 }
 
-const AvatarInput: React.FC<IProps> = ({ onChange }) => {
-  const [image, setImage] = useState<string | null>(null);
+const AvatarInput: React.FC<IProps> = ({ onChange, initialImage = null }) => {
+  const [image, setImage] = useState<string | null>(initialImage);
+
+  useEffect(() => {
+    setImage(initialImage);
+  }, [initialImage]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const { target } = e;
