@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFormik } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
@@ -27,6 +28,8 @@ interface IPayload {
 }
 
 const CouriersCreation: React.FC = () => {
+  const history = useHistory();
+
   const formik = useFormik<IPayload>({
     initialValues: {
       name: '',
@@ -59,13 +62,17 @@ const CouriersCreation: React.FC = () => {
     formik.setFieldValue('avatar', avatar);
   }
 
+  function handleGoBack(): void {
+    history.push('/couriers');
+  }
+
   return (
     <Container>
       <Row>
         <Title>Cadastro de entregadores</Title>
 
         <Actions>
-          <BackButton type="button">
+          <BackButton type="button" onClick={handleGoBack}>
             <MdNavigateBefore />
             Voltar
           </BackButton>
