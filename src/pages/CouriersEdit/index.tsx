@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useParams, useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -21,6 +22,7 @@ import {
   Form,
   Label,
   Input,
+  Error,
 } from '../../components/EditCreationRelated';
 import AvatarInput from './components/AvatarInput';
 
@@ -45,6 +47,10 @@ export interface ICourierDisplay {
   theme: Theme;
 }
 
+const CouriersEditSchema = Yup.object().shape({
+  email: Yup.string().email('Email inválido'),
+});
+
 const CouriersEdit: React.FC = () => {
   const [courierAvatar, setCourierAvatar] = useState('');
   const [courierDisplay, setCourierDisplay] = useState<ICourierDisplay>({
@@ -62,6 +68,7 @@ const CouriersEdit: React.FC = () => {
       email: '',
       avatar: null,
     },
+    validationSchema: CouriersEditSchema,
     async onSubmit(payload) {
       const payloadWithoutFalsyFields = removeFalsyFields<IPayload>(payload);
 
@@ -151,6 +158,9 @@ const CouriersEdit: React.FC = () => {
             onChange={formik.handleChange}
             placeholder={placeholders.email}
           />
+          {formik.touched.email && formik.errors.email && (
+            <Error>{formik.errors.email}</Error>
+          )}
         </FormGroup>
       </Form>
     </Container>
