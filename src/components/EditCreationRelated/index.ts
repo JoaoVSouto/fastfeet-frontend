@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { down } from 'styled-breakpoints';
+import { darken } from 'polished';
 
 import { Button } from '../Button';
 import StyledInput from '../Input';
@@ -74,6 +75,12 @@ export const BackButton = styled(BaseButton)`
   &:focus,
   &:hover {
     color: ${({ theme }) => theme.secondary};
+    background-color: ${({ theme }) => theme.primary};
+  }
+
+  &:active {
+    border-color: ${({ theme }) => darken(0.1, theme.primary)};
+    background-color: ${({ theme }) => darken(0.1, theme.primary)};
   }
 `;
 
