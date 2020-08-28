@@ -51,6 +51,7 @@ const CouriersCreation: React.FC = () => {
       try {
         await api.post('couriers', formData);
 
+        history.push('/couriers');
         toast.success('Entregador criado com sucesso!');
       } catch {
         toast.error('Erro ao criar entregador.');
