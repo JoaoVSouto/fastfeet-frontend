@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useParams, useHistory } from 'react-router-dom';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
 
 import { getRandomTheme, Theme } from '../../utils/getRandomTheme';
 import { getNameInitials } from '../../utils/getNameInitials';
+import { removeFalsyFields } from '../../utils/removeFalsyFields';
+import { convert } from '../../utils/convert';
 
 import {
   Container,
@@ -61,7 +63,21 @@ const CouriersEdit: React.FC = () => {
       avatar: null,
     },
     async onSubmit(payload) {
-      console.log(payload, id);
+      const payloadWithoutFalsyFields = removeFalsyFields<IPayload>(payload);
+
+      const formData = convert.objectToFormData({
+        ...payloadWithoutFalsyFields,
+        id,
+      });
+
+      try {
+        await api.put('couriers', formData);
+
+        history.push('/couriers');
+        toast.success('Entregador atualizado com sucesso!');
+      } catch {
+        toast.error('Erro ao atualizar entregador.');
+      }
     },
   });
 
