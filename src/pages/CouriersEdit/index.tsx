@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import { useParams, useHistory } from 'react-router-dom';
 // import { toast } from 'react-toastify';
-import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -20,7 +19,6 @@ import {
   Form,
   Label,
   Input,
-  Error,
 } from '../../components/EditCreationRelated';
 import AvatarInput from './components/AvatarInput';
 
@@ -45,17 +43,13 @@ export interface ICourierDisplay {
   theme: Theme;
 }
 
-const CouriersEditSchema = Yup.object().shape({
-  name: Yup.string().required('Nome não preenchido'),
-  email: Yup.string().email('Email inválido').required('Email não preenchido'),
-});
-
 const CouriersEdit: React.FC = () => {
   const [courierAvatar, setCourierAvatar] = useState('');
   const [courierDisplay, setCourierDisplay] = useState<ICourierDisplay>({
     initials: '',
     theme: getRandomTheme(),
   });
+  const [placeholders, setPlaceholders] = useState({ name: '', email: '' });
 
   const { id } = useParams();
   const history = useHistory();
@@ -66,7 +60,6 @@ const CouriersEdit: React.FC = () => {
       email: '',
       avatar: null,
     },
-    validationSchema: CouriersEditSchema,
     async onSubmit(payload) {
       console.log(payload, id);
     },
@@ -77,15 +70,16 @@ const CouriersEdit: React.FC = () => {
       const { data } = await api.get<ICourier>(`couriers/${id}`);
 
       setCourierAvatar(data.avatar?.url || '');
-      setCourierDisplay({
-        ...courierDisplay,
+      setCourierDisplay(state => ({
+        ...state,
         initials: getNameInitials(data.name),
+      }));
+      setPlaceholders({
+        email: data.email,
+        name: data.name,
       });
-
-      formik.setFieldValue('name', data.name);
-      formik.setFieldValue('email', data.email);
     })();
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id]);
 
   function setAvatar(avatar: File | null): void {
     formik.setFieldValue('avatar', avatar);
@@ -127,10 +121,8 @@ const CouriersEdit: React.FC = () => {
             name="name"
             value={formik.values.name}
             onChange={formik.handleChange}
+            placeholder={placeholders.name}
           />
-          {formik.touched.name && formik.errors.name && (
-            <Error>{formik.errors.name}</Error>
-          )}
         </FormGroup>
 
         <FormGroup>
@@ -141,10 +133,8 @@ const CouriersEdit: React.FC = () => {
             name="email"
             value={formik.values.email}
             onChange={formik.handleChange}
+            placeholder={placeholders.email}
           />
-          {formik.touched.email && formik.errors.email && (
-            <Error>{formik.errors.email}</Error>
-          )}
         </FormGroup>
       </Form>
     </Container>
