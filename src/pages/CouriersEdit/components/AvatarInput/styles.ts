@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { Theme } from '../../../../utils/getRandomTheme';
+
 export const Container = styled.div`
   height: 15rem;
   width: 15rem;
@@ -52,4 +54,22 @@ export const Container = styled.div`
     pointer-events: none;
     position: absolute;
   }
+`;
+
+interface IInitialDisplay {
+  colorTheme: Theme;
+}
+
+export const InitialsDisplay = styled.span<IInitialDisplay>`
+  position: absolute;
+  background-color: ${({ colorTheme }) => colorTheme.backgroundColor};
+  color: ${({ colorTheme }) => colorTheme.color};
+  border: 1px dashed ${({ colorTheme }) => colorTheme.color};
+  font-size: 6.6rem;
+  height: 100%;
+  width: 100%;
+  transform: scale(1.02);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
 `;

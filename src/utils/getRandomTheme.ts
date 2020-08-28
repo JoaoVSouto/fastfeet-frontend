@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 
-interface Theme {
+export interface Theme {
   backgroundColor: string;
   color: string;
 }
@@ -32,7 +32,7 @@ const themes = [
   },
 ];
 
-function getRandomTheme(): Theme {
+export function getRandomTheme(): Theme {
   const randomIndex = Math.floor(Math.random() * themes.length);
 
   const theme = themes[randomIndex];

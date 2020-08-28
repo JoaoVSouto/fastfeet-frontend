@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { MdInsertPhoto } from 'react-icons/md';
 
-import { Container } from './styles';
+import { Container, InitialsDisplay } from './styles';
+
+import { ICourierDisplay } from '../..';
 
 interface IProps {
   onChange(avatar: File | null): void;
   initialImage?: string;
+  courierDisplay?: ICourierDisplay;
 }
 
-const AvatarInput: React.FC<IProps> = ({ onChange, initialImage = null }) => {
+const AvatarInput: React.FC<IProps> = ({
+  onChange,
+  initialImage = null,
+  courierDisplay,
+}) => {
   const [image, setImage] = useState<string | null>(initialImage);
 
   useEffect(() => {
@@ -37,9 +43,11 @@ const AvatarInput: React.FC<IProps> = ({ onChange, initialImage = null }) => {
       <label htmlFor="avatar">
         {image && <img src={image} alt="avatar do entregador" />}
 
-        <MdInsertPhoto />
-
-        <strong>Adicionar foto</strong>
+        {!image && courierDisplay && (
+          <InitialsDisplay colorTheme={courierDisplay.theme}>
+            {courierDisplay.initials}
+          </InitialsDisplay>
+        )}
 
         <input
           type="file"

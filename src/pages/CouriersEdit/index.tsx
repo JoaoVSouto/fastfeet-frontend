@@ -7,6 +7,9 @@ import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
 
+import { getRandomTheme, Theme } from '../../utils/getRandomTheme';
+import { getNameInitials } from '../../utils/getNameInitials';
+
 import {
   Container,
   Row,
@@ -37,6 +40,11 @@ interface IPayload {
   avatar: File | null;
 }
 
+export interface ICourierDisplay {
+  initials: string;
+  theme: Theme;
+}
+
 const CouriersEditSchema = Yup.object().shape({
   name: Yup.string().required('Nome não preenchido'),
   email: Yup.string().email('Email inválido').required('Email não preenchido'),
@@ -44,6 +52,10 @@ const CouriersEditSchema = Yup.object().shape({
 
 const CouriersEdit: React.FC = () => {
   const [courierAvatar, setCourierAvatar] = useState('');
+  const [courierDisplay, setCourierDisplay] = useState<ICourierDisplay>({
+    initials: '',
+    theme: getRandomTheme(),
+  });
 
   const { id } = useParams();
   const history = useHistory();
@@ -65,6 +77,10 @@ const CouriersEdit: React.FC = () => {
       const { data } = await api.get<ICourier>(`couriers/${id}`);
 
       setCourierAvatar(data.avatar?.url || '');
+      setCourierDisplay({
+        ...courierDisplay,
+        initials: getNameInitials(data.name),
+      });
 
       formik.setFieldValue('name', data.name);
       formik.setFieldValue('email', data.email);
@@ -97,7 +113,11 @@ const CouriersEdit: React.FC = () => {
       </Row>
 
       <Form>
-        <AvatarInput onChange={setAvatar} initialImage={courierAvatar} />
+        <AvatarInput
+          onChange={setAvatar}
+          initialImage={courierAvatar}
+          courierDisplay={courierDisplay}
+        />
 
         <FormGroup>
           <Label htmlFor="name">Nome</Label>
