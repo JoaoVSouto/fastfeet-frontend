@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -16,6 +17,7 @@ import {
   Form,
   Label,
   Input,
+  Error,
 } from '../../components/EditCreationRelated';
 import AvatarInput from './components/AvatarInput';
 
@@ -27,6 +29,11 @@ interface IPayload {
   avatar: File | null;
 }
 
+const CouriersCreationSchema = Yup.object().shape({
+  name: Yup.string().required('Nome não preenchido'),
+  email: Yup.string().email('Email inválido').required('Email não preenchido'),
+});
+
 const CouriersCreation: React.FC = () => {
   const history = useHistory();
 
@@ -36,6 +43,7 @@ const CouriersCreation: React.FC = () => {
       email: '',
       avatar: null,
     },
+    validationSchema: CouriersCreationSchema,
     async onSubmit(payload) {
       const { avatar, email, name } = payload;
 
@@ -96,6 +104,9 @@ const CouriersCreation: React.FC = () => {
             value={formik.values.name}
             onChange={formik.handleChange}
           />
+          {formik.touched.name && formik.errors.name && (
+            <Error>{formik.errors.name}</Error>
+          )}
         </FormGroup>
 
         <FormGroup>
@@ -107,6 +118,9 @@ const CouriersCreation: React.FC = () => {
             value={formik.values.email}
             onChange={formik.handleChange}
           />
+          {formik.touched.email && formik.errors.email && (
+            <Error>{formik.errors.email}</Error>
+          )}
         </FormGroup>
       </Form>
     </Container>
