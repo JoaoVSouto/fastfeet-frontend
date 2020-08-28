@@ -7,6 +7,7 @@ declare module 'react-redux' {
       signed: boolean;
       loading: boolean;
       rememberMe: boolean;
+      loggedOn: string | null;
     };
   }
 }

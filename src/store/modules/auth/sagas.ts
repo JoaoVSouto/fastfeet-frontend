@@ -2,6 +2,7 @@ import { takeLatest, all, call, put } from 'redux-saga/effects';
 import { AxiosResponse } from 'axios';
 import { CustomRehydrateAction } from 'redux-persist';
 import { toast } from 'react-toastify';
+import { differenceInDays, parseISO } from 'date-fns';
 
 import api from '../../../services/api';
 import history from '../../../services/history';
@@ -30,6 +31,24 @@ export function* treatRememberMe({
   const rememberMeMarker = sessionStorage.getItem('fastfeet:rememberMeMarker');
 
   if (signed && !rememberMe && !rememberMeMarker) {
+    yield put(signOut());
+  }
+}
+
+export function* checkIfLoginExpired({
+  payload,
+}: CustomRehydrateAction): Generator {
+  if (!payload) return;
+
+  const { signed, loggedOn } = payload.auth;
+
+  if (!signed || !loggedOn) return;
+
+  const loggedOnParsedISO = parseISO(loggedOn);
+
+  const daysDifference = differenceInDays(new Date(), loggedOnParsedISO);
+
+  if (daysDifference >= 7) {
     yield put(signOut());
   }
 }
@@ -66,6 +85,7 @@ export function signUserOut(): void {
 export default all([
   takeLatest('persist/REHYDRATE', setToken),
   takeLatest('persist/REHYDRATE', treatRememberMe),
+  takeLatest('persist/REHYDRATE', checkIfLoginExpired),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_OUT', signUserOut),
 ]);

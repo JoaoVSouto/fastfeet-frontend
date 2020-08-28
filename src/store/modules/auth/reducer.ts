@@ -8,6 +8,7 @@ const INITIAL_STATE: DefaultRootState['auth'] = {
   signed: false,
   loading: false,
   rememberMe: false,
+  loggedOn: null,
 };
 
 export default function auth(
@@ -25,6 +26,7 @@ export default function auth(
         draft.rememberMe = action.payload?.rememberMe;
         draft.signed = true;
         draft.loading = false;
+        draft.loggedOn = new Date().toISOString();
         break;
 
       case '@auth/SIGN_FAILURE':
