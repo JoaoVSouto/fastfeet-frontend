@@ -14,8 +14,9 @@ import {
   RegisterLink,
   NotFound,
 } from '../../components/DashboardRelated';
+import DataDisplay from './components/DataDisplay';
 
-interface IRecipient {
+export interface IRecipient {
   id: number;
   name: string;
   address_street: string;
@@ -79,6 +80,17 @@ const RecipientsDashboard: React.FC = () => {
           Cadastrar
         </RegisterLink>
       </Controls>
+
+      {recipients.length === 0 ? (
+        <NotFound>
+          Nenhum destinatário encontrado&nbsp;
+          <span role="img" aria-label="expressão triste">
+            😢
+          </span>
+        </NotFound>
+      ) : (
+        <DataDisplay recipients={recipients} />
+      )}
     </Container>
   );
 };
