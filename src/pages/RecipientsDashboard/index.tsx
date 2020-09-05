@@ -61,6 +61,10 @@ const RecipientsDashboard: React.FC = () => {
     retrieveRecipientsDebounced(value);
   }
 
+  function removeRecipient(recipientId: number): void {
+    setRecipients(recipients.filter(recipient => recipient.id !== recipientId));
+  }
+
   return (
     <Container>
       <Title>Gerenciando destinatários</Title>
@@ -92,6 +96,7 @@ const RecipientsDashboard: React.FC = () => {
         <DataDisplay
           recipients={recipients}
           recipientsSearch={recipientsSearch}
+          removeRecipient={removeRecipient}
         />
       )}
     </Container>

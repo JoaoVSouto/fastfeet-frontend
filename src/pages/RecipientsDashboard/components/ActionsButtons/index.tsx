@@ -6,16 +6,24 @@ import { IRecipient } from '../..';
 
 interface IProps {
   recipient: IRecipient;
+  askForCourierDeletion(recipientId: number): void;
 }
 
-const ActionsButtons: React.FC<IProps> = ({ recipient }) => {
+const ActionsButtons: React.FC<IProps> = ({
+  recipient,
+  askForCourierDeletion,
+}) => {
   return (
     <>
       <Link to={`recipients/edit/${recipient.id}`} className="edit">
         <MdEdit />
         Editar
       </Link>
-      <button type="button" className="delete">
+      <button
+        type="button"
+        className="delete"
+        onClick={() => askForCourierDeletion(recipient.id)}
+      >
         <MdDeleteForever />
         Excluir
       </button>

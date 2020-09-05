@@ -1,12 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { useWindowSize } from '../../../../hooks/useWindowSize';
+
+import api from '../../../../services/api';
 
 import Table from '../../../../components/Table';
 import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
+import Modal, {
+  MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalDeletionContainer,
+  AcceptButton,
+  CancelButton,
+} from '../../../../components/Modal';
 
 import { Card } from './styles';
 
@@ -15,9 +24,19 @@ import { IRecipient } from '../..';
 interface IProps {
   recipients: IRecipient[];
   recipientsSearch: string;
+  removeRecipient(recipientId: number): void;
 }
 
-const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
+const DataDisplay: React.FC<IProps> = ({
+  recipients,
+  recipientsSearch,
+  removeRecipient,
+}) => {
+  const [isDeletionModalOpen, setIsDeletionModalOpen] = useState(false);
+  const [recipientToBeDeleted, setRecipientToBeDeleted] = useState<
+    number | null
+  >(null);
+
   const { width } = useWindowSize();
 
   const isDesktop = useMemo(() => {
@@ -31,6 +50,35 @@ const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
 
     return false;
   }, [width]);
+
+  function askForRecipientDeletion(recipientId: number): void {
+    setRecipientToBeDeleted(recipientId);
+    setIsDeletionModalOpen(true);
+  }
+
+  function resetDeletionModalState(): void {
+    setIsDeletionModalOpen(false);
+
+    setTimeout(() => {
+      setRecipientToBeDeleted(null);
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  async function deleteRecipient(): Promise<void> {
+    if (!recipientToBeDeleted) return;
+
+    try {
+      await api.delete(`recipients/${recipientToBeDeleted}`);
+
+      removeRecipient(recipientToBeDeleted);
+
+      toast.success('Destinatário excluído com sucesso!');
+    } catch {
+      toast.error('Ops... Algum erro aconteceu ao excluir destinatário.');
+    } finally {
+      resetDeletionModalState();
+    }
+  }
 
   return (
     <>
@@ -62,7 +110,10 @@ const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
                 </td>
                 <td>
                   <Actions>
-                    <ActionsButtons recipient={recipient} />
+                    <ActionsButtons
+                      recipient={recipient}
+                      askForCourierDeletion={askForRecipientDeletion}
+                    />
                   </Actions>
                 </td>
               </tr>
@@ -75,7 +126,10 @@ const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
             <Card key={recipient.id}>
               <ActionsContainer>
                 <Actions isMobile>
-                  <ActionsButtons recipient={recipient} />
+                  <ActionsButtons
+                    recipient={recipient}
+                    askForCourierDeletion={askForRecipientDeletion}
+                  />
                 </Actions>
               </ActionsContainer>
 
@@ -104,6 +158,29 @@ const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
           ))}
         </CardsContainer>
       )}
+
+      <Modal
+        open={isDeletionModalOpen}
+        onRequestClose={resetDeletionModalState}
+      >
+        <ModalDeletionContainer>
+          <p>
+            Tem certeza que deseja excluir o destinatário de ID{' '}
+            <strong>{`#${String(recipientToBeDeleted).padStart(
+              2,
+              '0'
+            )}`}</strong>
+            ?
+          </p>
+
+          <div>
+            <CancelButton onClick={resetDeletionModalState}>
+              Cancelar
+            </CancelButton>
+            <AcceptButton onClick={deleteRecipient}>Excluir</AcceptButton>
+          </div>
+        </ModalDeletionContainer>
+      </Modal>
     </>
   );
 };
