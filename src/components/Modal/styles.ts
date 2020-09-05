@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 import { Button } from '../Button';
 
@@ -33,8 +34,14 @@ export const CancelButton = styled(Button)`
   border: 2px solid ${({ theme }) => theme.primary};
   transition: all 0.3s;
 
-  &:hover,
-  &:focus {
+  &:focus,
+  &:hover {
     color: ${({ theme }) => theme.secondary};
+    background-color: ${({ theme }) => theme.primary};
+  }
+
+  &:active {
+    border-color: ${({ theme }) => darken(0.1, theme.primary)};
+    background-color: ${({ theme }) => darken(0.1, theme.primary)};
   }
 `;
