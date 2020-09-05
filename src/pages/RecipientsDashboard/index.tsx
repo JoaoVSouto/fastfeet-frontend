@@ -89,7 +89,10 @@ const RecipientsDashboard: React.FC = () => {
           </span>
         </NotFound>
       ) : (
-        <DataDisplay recipients={recipients} />
+        <DataDisplay
+          recipients={recipients}
+          recipientsSearch={recipientsSearch}
+        />
       )}
     </Container>
   );

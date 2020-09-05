@@ -6,6 +6,7 @@ import Table from '../../../../components/Table';
 import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import { CardsContainer } from '../../../../components/Card';
+import Highlight from '../../../../components/Highlight';
 
 import { Card } from './styles';
 
@@ -13,9 +14,10 @@ import { IRecipient } from '../..';
 
 interface IProps {
   recipients: IRecipient[];
+  recipientsSearch: string;
 }
 
-const DataDisplay: React.FC<IProps> = ({ recipients }) => {
+const DataDisplay: React.FC<IProps> = ({ recipients, recipientsSearch }) => {
   const { width } = useWindowSize();
 
   const isDesktop = useMemo(() => {
@@ -47,7 +49,11 @@ const DataDisplay: React.FC<IProps> = ({ recipients }) => {
             {recipients.map(recipient => (
               <tr key={recipient.id}>
                 <td>{`#${String(recipient.id).padStart(2, '0')}`}</td>
-                <td>{recipient.name}</td>
+                <td>
+                  <Highlight toHighlight={recipientsSearch}>
+                    {recipient.name}
+                  </Highlight>
+                </td>
                 <td>
                   {recipient.address_street}, {recipient.address_number}
                   {recipient.address_complement &&
@@ -80,7 +86,11 @@ const DataDisplay: React.FC<IProps> = ({ recipients }) => {
 
               <div className="card-row">
                 <strong>Nome</strong>
-                <span>{recipient.name}</span>
+                <span>
+                  <Highlight toHighlight={recipientsSearch}>
+                    {recipient.name}
+                  </Highlight>
+                </span>
               </div>
 
               <div className="card-row address">
