@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import InputMask from 'react-input-mask';
-import Select from 'react-select';
+import Select, { ValueType } from 'react-select';
+import { useFormik } from 'formik';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -31,10 +32,33 @@ interface IIBGEUFResponse {
   nome: string;
 }
 
+interface IIBGECityResponse {
+  id: number;
+  nome: string;
+}
+
+interface IPayload {
+  uf: string;
+  city: string;
+}
+
 const RecipientsCreation: React.FC = () => {
   const history = useHistory();
 
   const [ufs, setUfs] = useState<ISelect[]>([]);
+  const [cities, setCities] = useState<ISelect[]>([]);
+
+  function handleRecipientCreation(payload: IPayload): void {
+    console.log(payload);
+  }
+
+  const formik = useFormik<IPayload>({
+    initialValues: {
+      uf: '',
+      city: '',
+    },
+    onSubmit: handleRecipientCreation,
+  });
 
   async function getUfOptions(): Promise<ISelect[]> {
     const { data } = await api.get<IIBGEUFResponse[]>(
@@ -49,6 +73,19 @@ const RecipientsCreation: React.FC = () => {
     return ufsTreated;
   }
 
+  async function getCityOptions(uf: string): Promise<ISelect[]> {
+    const { data } = await api.get<IIBGECityResponse[]>(
+      `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`
+    );
+
+    const citiesTreated = data.map(city => ({
+      value: city.nome,
+      label: city.nome,
+    }));
+
+    return citiesTreated;
+  }
+
   useEffect(() => {
     (async () => {
       const incomingUfs = await getUfOptions();
@@ -61,6 +98,26 @@ const RecipientsCreation: React.FC = () => {
     history.push('/recipients');
   }
 
+  async function handleUFChange(value: ValueType<ISelect>): Promise<void> {
+    const option: ISelect = value as ISelect;
+
+    const uf = option.value;
+
+    formik.setFieldValue('uf', uf);
+    formik.setFieldValue('city', '');
+
+    const incomingCities = await getCityOptions(uf);
+    setCities(incomingCities);
+  }
+
+  function handleCityChange(value: ValueType<ISelect>): void {
+    const option: ISelect = value as ISelect;
+
+    const city = option.value;
+
+    formik.setFieldValue('city', city);
+  }
+
   return (
     <Container>
       <Row>
@@ -71,7 +128,7 @@ const RecipientsCreation: React.FC = () => {
             <MdNavigateBefore />
             Voltar
           </BackButton>
-          <SaveButton type="button">
+          <SaveButton type="button" onClick={() => formik.handleSubmit()}>
             <MdDone />
             Salvar
           </SaveButton>
@@ -113,12 +170,20 @@ const RecipientsCreation: React.FC = () => {
               classNamePrefix="ReactSelect"
               loadingMessage={() => 'Carregando...'}
               noOptionsMessage={() => 'Nenhum estado encontrado.'}
-              onChange={console.log}
+              onChange={handleUFChange}
             />
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="city">Cidade</Label>
-            <Input type="text" id="city" />
+            <Label>Cidade</Label>
+            <Select
+              value={{ label: formik.values.city, value: formik.values.city }}
+              options={cities}
+              placeholder=""
+              classNamePrefix="ReactSelect"
+              loadingMessage={() => 'Carregando...'}
+              noOptionsMessage={() => 'Nenhuma cidade encontrada.'}
+              onChange={handleCityChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="cep">CEP</Label>
