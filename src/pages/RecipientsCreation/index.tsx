@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import InputMask from 'react-input-mask';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import {
@@ -73,7 +74,12 @@ const RecipientsCreation: React.FC = () => {
           </FormGroup>
           <FormGroup>
             <Label htmlFor="cep">CEP</Label>
-            <Input type="text" id="cep" />
+            <Input
+              as={InputMask}
+              id="cep"
+              mask="99999-999"
+              maskPlaceholder={'\u2007'}
+            />
           </FormGroup>
         </FormRowCity>
       </Form>
