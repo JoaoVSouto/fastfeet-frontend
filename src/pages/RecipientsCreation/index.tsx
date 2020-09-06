@@ -55,7 +55,12 @@ const RecipientsCreation: React.FC = () => {
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_number">Número</Label>
-            <Input type="text" id="address_number" />
+            <Input
+              as={InputMask}
+              id="address_number"
+              mask="9999"
+              maskPlaceholder={'\u2007'}
+            />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_complement">Complemento</Label>
