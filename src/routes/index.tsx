@@ -14,6 +14,7 @@ import CouriersCreation from '../pages/CouriersCreation';
 import CouriersEdit from '../pages/CouriersEdit';
 
 import RecipientsDashboard from '../pages/RecipientsDashboard';
+import RecipientsCreation from '../pages/RecipientsCreation';
 
 const Routes: React.FC = () => {
   return (
@@ -32,6 +33,11 @@ const Routes: React.FC = () => {
         path="/recipients"
         exact
         component={RecipientsDashboard}
+        isPrivate
+      />
+      <Route
+        path="/recipients/create"
+        component={RecipientsCreation}
         isPrivate
       />
 
