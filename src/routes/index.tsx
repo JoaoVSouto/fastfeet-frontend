@@ -15,6 +15,7 @@ import CouriersEdit from '../pages/CouriersEdit';
 
 import RecipientsDashboard from '../pages/RecipientsDashboard';
 import RecipientsCreation from '../pages/RecipientsCreation';
+import RecipientsEdit from '../pages/RecipientsEdit';
 
 const Routes: React.FC = () => {
   return (
@@ -40,6 +41,7 @@ const Routes: React.FC = () => {
         component={RecipientsCreation}
         isPrivate
       />
+      <Route path="/recipients/edit/:id" component={RecipientsEdit} isPrivate />
 
       <Redirect to="/" />
     </Switch>
