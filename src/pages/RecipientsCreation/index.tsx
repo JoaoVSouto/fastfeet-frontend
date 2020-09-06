@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import InputMask from 'react-input-mask';
+import Select from 'react-select';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -13,13 +16,46 @@ import {
   Form,
   Label,
   Input,
-  Error,
 } from '../../components/EditCreationRelated';
 
 import { FormRowAddress, FormRowCity, FormGroup } from './styles';
 
+interface ISelect {
+  value: string;
+  label: string;
+}
+
+interface IIBGEUFResponse {
+  id: number;
+  sigla: string;
+  nome: string;
+}
+
 const RecipientsCreation: React.FC = () => {
   const history = useHistory();
+
+  const [ufs, setUfs] = useState<ISelect[]>([]);
+
+  async function getUfOptions(): Promise<ISelect[]> {
+    const { data } = await api.get<IIBGEUFResponse[]>(
+      'https://servicodados.ibge.gov.br/api/v1/localidades/estados'
+    );
+
+    const ufsTreated = data.map(uf => ({
+      value: uf.sigla,
+      label: uf.nome,
+    }));
+
+    return ufsTreated;
+  }
+
+  useEffect(() => {
+    (async () => {
+      const incomingUfs = await getUfOptions();
+
+      setUfs(incomingUfs);
+    })();
+  }, []);
 
   function handleGoBack(): void {
     history.push('/recipients');
@@ -70,8 +106,15 @@ const RecipientsCreation: React.FC = () => {
 
         <FormRowCity>
           <FormGroup>
-            <Label htmlFor="uf">Estado</Label>
-            <Input type="text" id="uf" />
+            <Label>Estado</Label>
+            <Select
+              options={ufs}
+              placeholder=""
+              classNamePrefix="ReactSelect"
+              loadingMessage={() => 'Carregando...'}
+              noOptionsMessage={() => 'Nenhum estado encontrado.'}
+              onChange={console.log}
+            />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="city">Cidade</Label>
