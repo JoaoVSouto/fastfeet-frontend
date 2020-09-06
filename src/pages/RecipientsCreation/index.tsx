@@ -15,7 +15,7 @@ import {
   Error,
 } from '../../components/EditCreationRelated';
 
-import { FormRow, FormGroup } from './styles';
+import { FormRowAddress, FormRowCity, FormGroup } from './styles';
 
 const RecipientsCreation: React.FC = () => {
   const history = useHistory();
@@ -47,7 +47,7 @@ const RecipientsCreation: React.FC = () => {
           <Input type="text" id="name" />
         </FormGroup>
 
-        <FormRow>
+        <FormRowAddress>
           <FormGroup grow>
             <Label htmlFor="street">Rua</Label>
             <Input type="text" id="street" />
@@ -60,22 +60,22 @@ const RecipientsCreation: React.FC = () => {
             <Label htmlFor="address_complement">Complemento</Label>
             <Input type="text" id="address_complement" />
           </FormGroup>
-        </FormRow>
+        </FormRowAddress>
 
-        <FormRow>
-          <FormGroup>
-            <Label htmlFor="city">Cidade</Label>
-            <Input type="text" id="city" />
-          </FormGroup>
+        <FormRowCity>
           <FormGroup>
             <Label htmlFor="uf">Estado</Label>
             <Input type="text" id="uf" />
           </FormGroup>
           <FormGroup>
+            <Label htmlFor="city">Cidade</Label>
+            <Input type="text" id="city" />
+          </FormGroup>
+          <FormGroup>
             <Label htmlFor="cep">CEP</Label>
             <Input type="text" id="cep" />
           </FormGroup>
-        </FormRow>
+        </FormRowCity>
       </Form>
     </Container>
   );
