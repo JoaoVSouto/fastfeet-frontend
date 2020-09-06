@@ -3,10 +3,13 @@ import { useHistory } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import Select, { ValueType } from 'react-select';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
+
+import { removeFalsyFields } from '../../utils/removeFalsyFields';
 
 import {
   Container,
@@ -70,8 +73,21 @@ const RecipientsCreation: React.FC = () => {
   const [ufs, setUfs] = useState<ISelect[]>([]);
   const [cities, setCities] = useState<ISelect[]>([]);
 
-  function handleRecipientCreation(payload: IPayload): void {
-    console.log(payload);
+  async function handleRecipientCreation(payload: IPayload): Promise<void> {
+    const cepWithoutHyphen = payload.address_cep.replace('-', '');
+    const payloadWithoutFalsyFields = removeFalsyFields({
+      ...payload,
+      address_cep: cepWithoutHyphen,
+    });
+
+    try {
+      await api.post('recipients', payloadWithoutFalsyFields);
+
+      history.push('/recipients');
+      toast.success('Destinatário criado com sucesso!');
+    } catch {
+      toast.error('Erro ao criar destinatário.');
+    }
   }
 
   const formik = useFormik<IPayload>({
