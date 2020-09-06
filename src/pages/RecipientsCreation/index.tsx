@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import InputMask from 'react-input-mask';
 import Select, { ValueType } from 'react-select';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -17,6 +18,7 @@ import {
   Form,
   Label,
   Input,
+  Error,
 } from '../../components/EditCreationRelated';
 
 import { FormRowAddress, FormRowCity, FormGroup } from './styles';
@@ -47,6 +49,21 @@ interface IPayload {
   city: string;
 }
 
+const RecipientsCreationSchema = Yup.object().shape({
+  name: Yup.string().required('Nome não preenchido'),
+  address_street: Yup.string().required('Rua não preenchida'),
+  address_number: Yup.string()
+    .matches(/[0-9]{1,4}/, 'Número inválido')
+    .required('Número não preenchido'),
+  address_cep: Yup.string()
+    .matches(/[0-9]{5}-[0-9]{3}/, 'CEP inválido')
+    .required('CEP não preenchido'),
+  uf: Yup.string()
+    .length(2, 'Estado inválido')
+    .required('Estado não selecionado'),
+  city: Yup.string().required('Cidade não selecionada'),
+});
+
 const RecipientsCreation: React.FC = () => {
   const history = useHistory();
 
@@ -67,6 +84,7 @@ const RecipientsCreation: React.FC = () => {
       uf: '',
       city: '',
     },
+    validationSchema: RecipientsCreationSchema,
     onSubmit: handleRecipientCreation,
   });
 
@@ -155,6 +173,9 @@ const RecipientsCreation: React.FC = () => {
             value={formik.values.name}
             onChange={formik.handleChange}
           />
+          {formik.touched.name && formik.errors.name && (
+            <Error>{formik.errors.name}</Error>
+          )}
         </FormGroup>
 
         <FormRowAddress>
@@ -167,6 +188,9 @@ const RecipientsCreation: React.FC = () => {
               value={formik.values.address_street}
               onChange={formik.handleChange}
             />
+            {formik.touched.address_street && formik.errors.address_street && (
+              <Error>{formik.errors.address_street}</Error>
+            )}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_number">Número</Label>
@@ -179,6 +203,9 @@ const RecipientsCreation: React.FC = () => {
               mask="9999"
               maskPlaceholder={'\u2007'}
             />
+            {formik.touched.address_number && formik.errors.address_number && (
+              <Error>{formik.errors.address_number}</Error>
+            )}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_complement">Complemento</Label>
@@ -203,6 +230,9 @@ const RecipientsCreation: React.FC = () => {
               noOptionsMessage={() => 'Nenhum estado encontrado.'}
               onChange={handleUFChange}
             />
+            {formik.touched.uf && formik.errors.uf && (
+              <Error>{formik.errors.uf}</Error>
+            )}
           </FormGroup>
           <FormGroup>
             <Label>Cidade</Label>
@@ -215,6 +245,9 @@ const RecipientsCreation: React.FC = () => {
               noOptionsMessage={() => 'Nenhuma cidade encontrada.'}
               onChange={handleCityChange}
             />
+            {formik.touched.city && formik.errors.city && (
+              <Error>{formik.errors.city}</Error>
+            )}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="cep">CEP</Label>
@@ -227,6 +260,9 @@ const RecipientsCreation: React.FC = () => {
               value={formik.values.address_cep}
               onChange={formik.handleChange}
             />
+            {formik.touched.address_cep && formik.errors.address_cep && (
+              <Error>{formik.errors.address_cep}</Error>
+            )}
           </FormGroup>
         </FormRowCity>
       </Form>
