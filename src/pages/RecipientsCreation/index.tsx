@@ -38,6 +38,11 @@ interface IIBGECityResponse {
 }
 
 interface IPayload {
+  name: string;
+  address_street: string;
+  address_number: string;
+  address_cep: string;
+  address_complement: string;
   uf: string;
   city: string;
 }
@@ -54,6 +59,11 @@ const RecipientsCreation: React.FC = () => {
 
   const formik = useFormik<IPayload>({
     initialValues: {
+      name: '',
+      address_street: '',
+      address_number: '',
+      address_cep: '',
+      address_complement: '',
       uf: '',
       city: '',
     },
@@ -138,26 +148,47 @@ const RecipientsCreation: React.FC = () => {
       <Form>
         <FormGroup>
           <Label htmlFor="name">Nome</Label>
-          <Input type="text" id="name" />
+          <Input
+            type="text"
+            id="name"
+            name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+          />
         </FormGroup>
 
         <FormRowAddress>
           <FormGroup grow>
             <Label htmlFor="street">Rua</Label>
-            <Input type="text" id="street" />
+            <Input
+              type="text"
+              id="street"
+              name="address_street"
+              value={formik.values.address_street}
+              onChange={formik.handleChange}
+            />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_number">Número</Label>
             <Input
               as={InputMask}
               id="address_number"
+              name="address_number"
+              value={formik.values.address_number}
+              onChange={formik.handleChange}
               mask="9999"
               maskPlaceholder={'\u2007'}
             />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_complement">Complemento</Label>
-            <Input type="text" id="address_complement" />
+            <Input
+              type="text"
+              id="address_complement"
+              name="address_complement"
+              value={formik.values.address_complement}
+              onChange={formik.handleChange}
+            />
           </FormGroup>
         </FormRowAddress>
 
@@ -192,6 +223,9 @@ const RecipientsCreation: React.FC = () => {
               id="cep"
               mask="99999-999"
               maskPlaceholder={'\u2007'}
+              name="address_cep"
+              value={formik.values.address_cep}
+              onChange={formik.handleChange}
             />
           </FormGroup>
         </FormRowCity>
