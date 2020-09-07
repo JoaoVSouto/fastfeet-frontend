@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
 import Select from 'react-select';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -37,6 +37,7 @@ const RecipientsEdit: React.FC = () => {
   const [ufFullName, setUfFullName] = useState('');
 
   const { id } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     (async () => {
@@ -54,13 +55,17 @@ const RecipientsEdit: React.FC = () => {
     })();
   }, [id]);
 
+  function handleGoBack(): void {
+    history.push('/recipients');
+  }
+
   return (
     <Container>
       <Row>
         <Title>Edição de destinatário</Title>
 
         <Actions>
-          <BackButton type="button">
+          <BackButton type="button" onClick={handleGoBack}>
             <MdNavigateBefore />
             Voltar
           </BackButton>
