@@ -23,6 +23,16 @@ class Format {
 
     return dateFormatted;
   }
+
+  bigString(string: string, maxLength: number): string {
+    if (string.length <= maxLength) {
+      return string;
+    }
+
+    const stringEllipsed = string.slice(0, maxLength).trim().concat('...');
+
+    return stringEllipsed;
+  }
 }
 
 export const format = new Format();

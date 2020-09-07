@@ -26,7 +26,7 @@ export const Card = styled.article`
       margin-right: 1rem;
     }
 
-    span.email {
+    span.text-overflow-ellipsis {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

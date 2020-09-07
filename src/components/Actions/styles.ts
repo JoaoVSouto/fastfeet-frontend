@@ -23,6 +23,8 @@ interface IDropdown {
   open?: boolean;
   intersected?: boolean;
   isMobile?: boolean;
+  width?: string;
+  mobileLeft?: string;
 }
 
 export const Dropdown = styled.div<IDropdown>`
@@ -37,7 +39,7 @@ export const Dropdown = styled.div<IDropdown>`
   box-shadow: 0px 0px 3px 1px #00000026;
   z-index: 1;
   padding: 1.6rem 1rem;
-  width: 15rem;
+  width: ${({ width }) => width || '15rem'};
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -66,10 +68,10 @@ export const Dropdown = styled.div<IDropdown>`
       }
     `}
 
-    ${({ isMobile }) =>
+    ${({ isMobile, mobileLeft }) =>
       isMobile &&
       css`
-        left: -3rem;
+        left: ${mobileLeft || '-3rem'};
 
         &::before {
           left: 82% !important;

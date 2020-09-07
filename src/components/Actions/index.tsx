@@ -9,9 +9,16 @@ export { ActionsContainer } from './styles';
 
 interface IProps {
   isMobile?: boolean;
+  dropdownWidth?: string;
+  dropdownMobileLeft?: string;
 }
 
-const Actions: React.FC<IProps> = ({ children, isMobile }) => {
+const Actions: React.FC<IProps> = ({
+  children,
+  isMobile,
+  dropdownWidth,
+  dropdownMobileLeft,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOutsidePage, setIsOutsidePage] = useState(false);
 
@@ -71,6 +78,8 @@ const Actions: React.FC<IProps> = ({ children, isMobile }) => {
         ref={dropdownRef}
         intersected={isOutsidePage}
         isMobile={isMobile}
+        width={dropdownWidth}
+        mobileLeft={dropdownMobileLeft}
       >
         {children}
       </Dropdown>
