@@ -17,6 +17,8 @@ import RecipientsDashboard from '../pages/RecipientsDashboard';
 import RecipientsCreation from '../pages/RecipientsCreation';
 import RecipientsEdit from '../pages/RecipientsEdit';
 
+import ProblemsDashboard from '../pages/ProblemsDashboard';
+
 const Routes: React.FC = () => {
   return (
     <Switch>
@@ -42,6 +44,8 @@ const Routes: React.FC = () => {
         isPrivate
       />
       <Route path="/recipients/edit/:id" component={RecipientsEdit} isPrivate />
+
+      <Route path="/problems" exact component={ProblemsDashboard} isPrivate />
 
       <Redirect to="/" />
     </Switch>
