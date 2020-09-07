@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
 import Select from 'react-select';
+import { useParams } from 'react-router-dom';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
+
+import api from '../../services/api';
+
+import { format } from '../../utils/format';
 
 import {
   Container,
@@ -17,7 +22,38 @@ import {
 
 import { FormRowAddress, FormRowCity, FormGroup } from './styles';
 
+interface IRecipient {
+  name: string;
+  address_street: string;
+  address_number: number;
+  address_complement?: string;
+  address_cep: string;
+  uf: string;
+  city: string;
+}
+
 const RecipientsEdit: React.FC = () => {
+  const [recipient, setRecipient] = useState<IRecipient>({} as IRecipient);
+  const [ufFullName, setUfFullName] = useState('');
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    (async () => {
+      const { data: recipientData } = await api.get<IRecipient>(
+        `recipients/${id}`
+      );
+
+      setRecipient(recipientData);
+
+      const { data: ufFullNameData } = await api.get(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${recipientData.uf}`
+      );
+
+      setUfFullName(ufFullNameData.nome);
+    })();
+  }, [id]);
+
   return (
     <Container>
       <Row>
@@ -38,13 +74,23 @@ const RecipientsEdit: React.FC = () => {
       <Form>
         <FormGroup>
           <Label htmlFor="name">Nome</Label>
-          <Input type="text" id="name" name="name" />
+          <Input
+            type="text"
+            id="name"
+            name="name"
+            placeholder={recipient.name}
+          />
         </FormGroup>
 
         <FormRowAddress>
           <FormGroup grow>
             <Label htmlFor="street">Rua</Label>
-            <Input type="text" id="street" name="address_street" />
+            <Input
+              type="text"
+              id="street"
+              name="address_street"
+              placeholder={recipient.address_street}
+            />
           </FormGroup>
           <FormGroup>
             <Label htmlFor="address_number">Número</Label>
@@ -52,6 +98,7 @@ const RecipientsEdit: React.FC = () => {
               as={InputMask}
               id="address_number"
               name="address_number"
+              placeholder={String(recipient.address_number)}
               mask="9999"
               maskPlaceholder={'\u2007'}
             />
@@ -62,6 +109,7 @@ const RecipientsEdit: React.FC = () => {
               type="text"
               id="address_complement"
               name="address_complement"
+              placeholder={recipient.address_complement}
             />
           </FormGroup>
         </FormRowAddress>
@@ -70,7 +118,7 @@ const RecipientsEdit: React.FC = () => {
           <FormGroup>
             <Label>Estado</Label>
             <Select
-              placeholder=""
+              placeholder={ufFullName || recipient.uf}
               classNamePrefix="ReactSelect"
               loadingMessage={() => 'Carregando...'}
               noOptionsMessage={() => 'Nenhum estado encontrado.'}
@@ -79,7 +127,7 @@ const RecipientsEdit: React.FC = () => {
           <FormGroup>
             <Label>Cidade</Label>
             <Select
-              placeholder=""
+              placeholder={recipient.city || ''}
               classNamePrefix="ReactSelect"
               loadingMessage={() => 'Carregando...'}
               noOptionsMessage={() => 'Nenhuma cidade encontrada.'}
@@ -90,9 +138,10 @@ const RecipientsEdit: React.FC = () => {
             <Input
               as={InputMask}
               id="cep"
+              name="address_cep"
+              placeholder={format.cep(recipient.address_cep)}
               mask="99999-999"
               maskPlaceholder={'\u2007'}
-              name="address_cep"
             />
           </FormGroup>
         </FormRowCity>

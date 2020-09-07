@@ -4,12 +4,16 @@ import { ptBR } from 'date-fns/locale';
 
 class Format {
   cep(cep: string): string {
-    const DELIMITER_POSITION = 5;
+    try {
+      const DELIMITER_POSITION = 5;
 
-    const firstFiveDigits = cep.slice(0, DELIMITER_POSITION);
-    const lastThreeDigits = cep.slice(DELIMITER_POSITION);
+      const firstFiveDigits = cep.slice(0, DELIMITER_POSITION);
+      const lastThreeDigits = cep.slice(DELIMITER_POSITION);
 
-    return `${firstFiveDigits}-${lastThreeDigits}`;
+      return `${firstFiveDigits}-${lastThreeDigits}`;
+    } catch {
+      return '';
+    }
   }
 
   date(date: string): string {
