@@ -3,6 +3,7 @@ import InputMask from 'react-input-mask';
 import Select, { ValueType } from 'react-select';
 import { useParams, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
@@ -19,6 +20,7 @@ import {
   Form,
   Label,
   Input,
+  Error,
 } from '../../components/EditCreationRelated';
 
 import { FormRowAddress, FormRowCity, FormGroup } from './styles';
@@ -49,6 +51,16 @@ interface IIBGECityResponse {
   nome: string;
 }
 
+const RecipientsEditSchema = Yup.object().shape({
+  address_cep: Yup.string().matches(/[0-9]{5}-[0-9]{3}/, 'CEP inválido'),
+  uf: Yup.string(),
+  city: Yup.string().when('uf', {
+    is: uf => Boolean(uf),
+    then: Yup.string().required('Cidade não selecionada'),
+    otherwise: Yup.string().notRequired(),
+  }),
+});
+
 const RecipientsEdit: React.FC = () => {
   const [recipient, setRecipient] = useState<IRecipient>({} as IRecipient);
   const [ufFullName, setUfFullName] = useState('');
@@ -72,6 +84,7 @@ const RecipientsEdit: React.FC = () => {
       uf: '',
       city: '',
     },
+    validationSchema: RecipientsEditSchema,
     onSubmit: handleRecipientUpdate,
   });
 
@@ -197,7 +210,9 @@ const RecipientsEdit: React.FC = () => {
               as={InputMask}
               id="address_number"
               name="address_number"
-              placeholder={String(recipient.address_number)}
+              placeholder={
+                recipient.address_number ? String(recipient.address_number) : ''
+              }
               mask="9999"
               maskPlaceholder={'\u2007'}
               value={formik.values.address_number}
@@ -222,7 +237,7 @@ const RecipientsEdit: React.FC = () => {
             <Label>Estado</Label>
             <Select
               options={ufs}
-              placeholder={ufFullName || recipient.uf}
+              placeholder={ufFullName || recipient.uf || ''}
               classNamePrefix="ReactSelect"
               loadingMessage={() => 'Carregando...'}
               noOptionsMessage={() => 'Nenhum estado encontrado.'}
@@ -247,6 +262,9 @@ const RecipientsEdit: React.FC = () => {
               noOptionsMessage={() => 'Nenhuma cidade encontrada.'}
               onChange={handleCityChange}
             />
+            {formik.touched.city && formik.errors.city && (
+              <Error>{formik.errors.city}</Error>
+            )}
           </FormGroup>
           <FormGroup>
             <Label htmlFor="cep">CEP</Label>
@@ -260,6 +278,9 @@ const RecipientsEdit: React.FC = () => {
               value={formik.values.address_cep}
               onChange={formik.handleChange}
             />
+            {formik.touched.address_cep && formik.errors.address_cep && (
+              <Error>{formik.errors.address_cep}</Error>
+            )}
           </FormGroup>
         </FormRowCity>
       </Form>
