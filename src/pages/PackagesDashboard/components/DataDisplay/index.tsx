@@ -310,7 +310,7 @@ const DataDisplay: React.FC<IProps> = ({
               <h5>Datas</h5>
               {packageInfo.canceled_at ? (
                 <p>
-                  <strong>Cancelamento:</strong> 25/01/2020
+                  <strong>Cancelamento:</strong> {packageInfo.canceled_at}
                 </p>
               ) : (
                 <>
