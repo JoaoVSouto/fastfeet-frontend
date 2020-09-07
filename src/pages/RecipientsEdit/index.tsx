@@ -4,10 +4,12 @@ import Select, { ValueType } from 'react-select';
 import { useParams, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { toast } from 'react-toastify';
 import { MdDone, MdNavigateBefore } from 'react-icons/md';
 
 import api from '../../services/api';
 
+import { removeFalsyFields } from '../../utils/removeFalsyFields';
 import { format } from '../../utils/format';
 
 import {
@@ -70,8 +72,24 @@ const RecipientsEdit: React.FC = () => {
   const { id } = useParams();
   const history = useHistory();
 
-  function handleRecipientUpdate(payload: StringMap<IRecipient>): void {
-    console.log(payload);
+  async function handleRecipientUpdate(
+    payload: StringMap<IRecipient>
+  ): Promise<void> {
+    const cepWithoutHyphen = payload.address_cep.replace('-', '');
+    const payloadWithoutFalsyFields = removeFalsyFields({
+      ...payload,
+      address_cep: cepWithoutHyphen,
+      id,
+    });
+
+    try {
+      await api.put('recipients', payloadWithoutFalsyFields);
+
+      history.push('/recipients');
+      toast.success('Destinatário atualizado com sucesso!');
+    } catch {
+      toast.error('Erro ao atualizar destinatário.');
+    }
   }
 
   const formik = useFormik<StringMap<IRecipient>>({
