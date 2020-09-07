@@ -1,12 +1,21 @@
 import React, { useState, useMemo } from 'react';
+import { toast } from 'react-toastify';
 
 import { format } from '../../../../utils/format';
 
 import { useWindowSize } from '../../../../hooks/useWindowSize';
 
+import api from '../../../../services/api';
+
 import Actions, { ActionsContainer } from '../../../../components/Actions';
 import ActionsButtons from '../ActionsButtons';
 import Card, { CardsContainer } from '../../../../components/Card';
+import Modal, {
+  MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalDeletionContainer,
+  AcceptButton,
+  CancelButton,
+} from '../../../../components/Modal';
 
 import { Table } from './styles';
 
@@ -14,12 +23,23 @@ import { IProblem } from '../..';
 
 interface IProps {
   problems: IProblem[];
+  removeProblems(packageId: number): void;
+}
+
+export interface IPackageToBeCanceledInfo {
+  packageId: number;
+  problemId: number;
 }
 
 const CHARACTER_AVERAGE_WIDTH = 7.5;
 
-const DataDisplay: React.FC<IProps> = ({ problems }) => {
+const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
   const [problemTableDataWidth, setProblemTableDataWidth] = useState(80);
+  const [isCancellingModalOpen, setIsCancellingModalOpen] = useState(false);
+  const [
+    packageToBeCanceled,
+    setPackageToBeCanceled,
+  ] = useState<IPackageToBeCanceledInfo | null>(null);
 
   const { width } = useWindowSize();
 
@@ -45,6 +65,39 @@ const DataDisplay: React.FC<IProps> = ({ problems }) => {
     }
   }
 
+  function askForPackageCancelling(
+    packageData: IPackageToBeCanceledInfo
+  ): void {
+    setPackageToBeCanceled(packageData);
+    setIsCancellingModalOpen(true);
+  }
+
+  function resetCancellingModalState(): void {
+    setIsCancellingModalOpen(false);
+
+    setTimeout(() => {
+      setPackageToBeCanceled(null);
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  async function cancelPackage(): Promise<void> {
+    if (!packageToBeCanceled) return;
+
+    const { packageId, problemId } = packageToBeCanceled;
+
+    try {
+      await api.delete(`problems/${problemId}/cancel-delivery`);
+
+      removeProblems(packageId);
+
+      toast.success('Encomenda cancelada com sucesso!');
+    } catch {
+      toast.error('Ops... Algum erro aconteceu ao cancelar encomenda.');
+    } finally {
+      resetCancellingModalState();
+    }
+  }
+
   return (
     <>
       {isDesktop ? (
@@ -66,7 +119,10 @@ const DataDisplay: React.FC<IProps> = ({ problems }) => {
                 </td>
                 <td>
                   <Actions dropdownWidth="20rem">
-                    <ActionsButtons />
+                    <ActionsButtons
+                      problem={problem}
+                      askForPackageCancelling={askForPackageCancelling}
+                    />
                   </Actions>
                 </td>
               </tr>
@@ -83,7 +139,10 @@ const DataDisplay: React.FC<IProps> = ({ problems }) => {
                   dropdownMobileLeft="-4.5rem"
                   isMobile
                 >
-                  <ActionsButtons />
+                  <ActionsButtons
+                    problem={problem}
+                    askForPackageCancelling={askForPackageCancelling}
+                  />
                 </Actions>
               </ActionsContainer>
 
@@ -102,6 +161,29 @@ const DataDisplay: React.FC<IProps> = ({ problems }) => {
           ))}
         </CardsContainer>
       )}
+
+      <Modal
+        open={isCancellingModalOpen}
+        onRequestClose={resetCancellingModalState}
+      >
+        <ModalDeletionContainer>
+          <p>
+            Tem certeza que deseja cancelar a encomenda de ID{' '}
+            <strong>{`#${String(packageToBeCanceled?.packageId).padStart(
+              2,
+              '0'
+            )}`}</strong>
+            ?
+          </p>
+
+          <div>
+            <CancelButton onClick={resetCancellingModalState}>
+              Cancelar
+            </CancelButton>
+            <AcceptButton onClick={cancelPackage}>Excluir</AcceptButton>
+          </div>
+        </ModalDeletionContainer>
+      </Modal>
     </>
   );
 };

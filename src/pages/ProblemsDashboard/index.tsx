@@ -21,6 +21,10 @@ const ProblemsDashboard: React.FC = () => {
     })();
   }, []);
 
+  function removeProblems(packageId: number): void {
+    setProblems(problems.filter(problem => problem.package_id !== packageId));
+  }
+
   return (
     <Container>
       <Title>Problemas na entrega</Title>
@@ -33,7 +37,7 @@ const ProblemsDashboard: React.FC = () => {
           </span>
         </NotFound>
       ) : (
-        <DataDisplay problems={problems} />
+        <DataDisplay problems={problems} removeProblems={removeProblems} />
       )}
     </Container>
   );
