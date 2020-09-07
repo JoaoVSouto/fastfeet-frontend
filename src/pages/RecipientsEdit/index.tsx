@@ -145,14 +145,15 @@ const RecipientsEdit: React.FC = () => {
       const { data: recipientData } = await api.get<IRecipient>(
         `recipients/${id}`
       );
-
       setRecipient(recipientData);
 
       const { data: ufFullNameData } = await api.get(
         `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${recipientData.uf}`
       );
-
       setUfFullName(ufFullNameData.nome);
+
+      const incomingCities = await getCityOptions(recipientData.uf);
+      setCities(incomingCities);
     })();
   }, [id]);
 
