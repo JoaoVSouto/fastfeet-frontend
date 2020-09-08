@@ -1,12 +1,11 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import ReactModal from 'react-modal';
 
-export {
-  ModalDeletionContainer,
-  ModalLoadingContainer,
-  AcceptButton,
-  CancelButton,
-} from './styles';
+import TeaLoading from '../TeaLoading';
+
+import { ModalLoadingContainer } from './styles';
+
+export { ModalDeletionContainer, AcceptButton, CancelButton } from './styles';
 
 interface IProps {
   open?: boolean;
@@ -16,6 +15,13 @@ interface IProps {
 type Props = React.PropsWithChildren<IProps>;
 
 export const MODAL_FADE_TRANSITION_TIME_IN_MS = 300;
+
+export const ModalLoading: React.FC = () => (
+  <ModalLoadingContainer>
+    <TeaLoading />
+    <strong>Carregando...</strong>
+  </ModalLoadingContainer>
+);
 
 const Modal: React.FC<Props> = ({ children, open = false, onRequestClose }) => {
   const [isOpen, setIsOpen] = useState(open);

@@ -12,12 +12,11 @@ import ActionsButtons from '../ActionsButtons';
 import Card, { CardsContainer } from '../../../../components/Card';
 import Modal, {
   MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalLoading,
   ModalDeletionContainer,
-  ModalLoadingContainer,
   AcceptButton,
   CancelButton,
 } from '../../../../components/Modal';
-import TeaLoading from '../../../../components/TeaLoading';
 
 import { Table, ModalInfoContainer } from './styles';
 
@@ -198,10 +197,7 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
             <p>{problemDescription}</p>
           </ModalInfoContainer>
         ) : (
-          <ModalLoadingContainer>
-            <TeaLoading />
-            <strong>Carregando...</strong>
-          </ModalLoadingContainer>
+          <ModalLoading />
         )}
       </Modal>
 

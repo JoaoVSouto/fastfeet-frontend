@@ -14,12 +14,11 @@ import Card, { CardsContainer } from '../../../../components/Card';
 import Highlight from '../../../../components/Highlight';
 import Modal, {
   MODAL_FADE_TRANSITION_TIME_IN_MS,
+  ModalLoading,
   ModalDeletionContainer,
-  ModalLoadingContainer,
   AcceptButton,
   CancelButton,
 } from '../../../../components/Modal';
-import TeaLoading from '../../../../components/TeaLoading';
 import {
   ImageContainer,
   ImagePlaceholder,
@@ -345,10 +344,7 @@ const DataDisplay: React.FC<IProps> = ({
             )}
           </>
         ) : (
-          <ModalLoadingContainer>
-            <TeaLoading />
-            <strong>Carregando...</strong>
-          </ModalLoadingContainer>
+          <ModalLoading />
         )}
       </Modal>
 
