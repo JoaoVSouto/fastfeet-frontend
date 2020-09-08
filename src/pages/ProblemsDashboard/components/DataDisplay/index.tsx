@@ -13,11 +13,13 @@ import Card, { CardsContainer } from '../../../../components/Card';
 import Modal, {
   MODAL_FADE_TRANSITION_TIME_IN_MS,
   ModalDeletionContainer,
+  ModalLoadingContainer,
   AcceptButton,
   CancelButton,
 } from '../../../../components/Modal';
+import TeaLoading from '../../../../components/TeaLoading';
 
-import { Table } from './styles';
+import { Table, ModalInfoContainer } from './styles';
 
 import { IProblem } from '../..';
 
@@ -40,6 +42,8 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
     packageToBeCanceled,
     setPackageToBeCanceled,
   ] = useState<IPackageToBeCanceledInfo | null>(null);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const [problemDescription, setProblemDescription] = useState('');
 
   const { width } = useWindowSize();
 
@@ -98,6 +102,29 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
     }
   }
 
+  function resetInfoModalState(): void {
+    setIsInfoModalOpen(false);
+
+    setTimeout(() => {
+      setProblemDescription('');
+    }, MODAL_FADE_TRANSITION_TIME_IN_MS);
+  }
+
+  async function loadProblemDescription(problemId: number): Promise<void> {
+    setIsInfoModalOpen(true);
+
+    try {
+      const { data } = await api.get(`problems/${problemId}`);
+
+      setProblemDescription(data.description);
+    } catch {
+      toast.error(
+        'Ops... Algum erro aconteceu ao requisitar informações do problema.'
+      );
+      setIsInfoModalOpen(false);
+    }
+  }
+
   return (
     <>
       {isDesktop ? (
@@ -122,6 +149,7 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
                     <ActionsButtons
                       problem={problem}
                       askForPackageCancelling={askForPackageCancelling}
+                      loadProblemDescription={loadProblemDescription}
                     />
                   </Actions>
                 </td>
@@ -142,6 +170,7 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
                   <ActionsButtons
                     problem={problem}
                     askForPackageCancelling={askForPackageCancelling}
+                    loadProblemDescription={loadProblemDescription}
                   />
                 </Actions>
               </ActionsContainer>
@@ -161,6 +190,20 @@ const DataDisplay: React.FC<IProps> = ({ problems, removeProblems }) => {
           ))}
         </CardsContainer>
       )}
+
+      <Modal open={isInfoModalOpen} onRequestClose={resetInfoModalState}>
+        {problemDescription ? (
+          <ModalInfoContainer>
+            <h4>Visualizar problema</h4>
+            <p>{problemDescription}</p>
+          </ModalInfoContainer>
+        ) : (
+          <ModalLoadingContainer>
+            <TeaLoading />
+            <strong>Carregando...</strong>
+          </ModalLoadingContainer>
+        )}
+      </Modal>
 
       <Modal
         open={isCancellingModalOpen}

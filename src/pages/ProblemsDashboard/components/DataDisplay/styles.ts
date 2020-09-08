@@ -16,3 +16,19 @@ export const Table = styled(StyledTable)`
     width: 6%;
   }
 `;
+
+export const ModalInfoContainer = styled.div`
+  max-width: 40rem;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 1.4rem;
+    color: ${({ theme }) => theme.titleColor};
+  }
+
+  p {
+    margin-top: 0.4rem;
+    line-height: 2.6rem;
+    font-size: 1.6rem;
+  }
+`;

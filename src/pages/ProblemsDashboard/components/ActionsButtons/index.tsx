@@ -7,15 +7,21 @@ import { IPackageToBeCanceledInfo } from '../DataDisplay';
 interface IProps {
   problem: IProblem;
   askForPackageCancelling(packageToBeCanceled: IPackageToBeCanceledInfo): void;
+  loadProblemDescription(problemId: number): Promise<void>;
 }
 
 const ActionsButtons: React.FC<IProps> = ({
   problem,
   askForPackageCancelling,
+  loadProblemDescription,
 }) => {
   return (
     <>
-      <button type="button" className="view">
+      <button
+        type="button"
+        className="view"
+        onClick={() => loadProblemDescription(problem.id)}
+      >
         <MdRemoveRedEye />
         Visualizar
       </button>
