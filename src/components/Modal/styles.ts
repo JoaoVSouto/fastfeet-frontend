@@ -45,3 +45,15 @@ export const CancelButton = styled(Button)`
     background-color: ${({ theme }) => darken(0.1, theme.primary)};
   }
 `;
+
+export const ModalLoadingContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  strong {
+    color: ${({ theme }) => theme.primary};
+    margin-top: 1rem;
+  }
+`;

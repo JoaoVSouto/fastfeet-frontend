@@ -15,6 +15,7 @@ import Highlight from '../../../../components/Highlight';
 import Modal, {
   MODAL_FADE_TRANSITION_TIME_IN_MS,
   ModalDeletionContainer,
+  ModalLoadingContainer,
   AcceptButton,
   CancelButton,
 } from '../../../../components/Modal';
@@ -27,7 +28,7 @@ import ActionsButtons from '../ActionsButtons';
 
 import { IPackage } from '../..';
 
-import { Status, InfoBox, ModalLoadingContainer, NotFound } from './styles';
+import { Status, InfoBox, NotFound } from './styles';
 
 interface IPackageInfo {
   canceled_at?: string;

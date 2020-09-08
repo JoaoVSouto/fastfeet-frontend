@@ -1,7 +1,12 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import ReactModal from 'react-modal';
 
-export { ModalDeletionContainer, AcceptButton, CancelButton } from './styles';
+export {
+  ModalDeletionContainer,
+  ModalLoadingContainer,
+  AcceptButton,
+  CancelButton,
+} from './styles';
 
 interface IProps {
   open?: boolean;
