@@ -15,7 +15,13 @@ _This project is the final challenge of the [Rocketseat](https://rocketseat.com.
 
 The FastFeet layout was based on [this prototype](https://xd.adobe.com/view/62e829fc-4f10-4ac8-70d2-d39b429d43ee-14d9/grid). But it was implemented in a way that is fully **responsive** 📱 and **accessible** ♿️.
 
-### Watch this [video tour](https://drive.google.com/file/d/1T_rU0cqIixA8SD99Zua5hcVLG_RH9nYQ/view?usp=sharing) 🎥 to see what is like to use the system.
+### 💡 Watch the video below to see what is like to use the system.
+
+<div align="center">
+  <a href="https://drive.google.com/file/d/1T_rU0cqIixA8SD99Zua5hcVLG_RH9nYQ/view?usp=sharing">
+    <img width="700" alt="Video tour thumbnail" src="https://raw.githubusercontent.com/JoaoVSouto/fastfeet-frontend/master/assets/video-thumbnail.png" />
+  </a>
+</div>
 
 ## :zap: Techs
 
